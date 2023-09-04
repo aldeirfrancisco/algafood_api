@@ -1,7 +1,5 @@
 package com.algafood.algafoodapi;
 
-import java.security.Provider.Service;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +11,7 @@ import com.algafood.algafoodapi.service.AtivacaoClienteService;
 @Controller
 public class MeuPrimeiroController {
 
-    @Autowired(required = true)
+    @Autowired
     AtivacaoClienteService ativaCliente;
 
     @GetMapping("/hello")

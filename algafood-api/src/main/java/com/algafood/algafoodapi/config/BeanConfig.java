@@ -4,10 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.algafood.algafoodapi.notificacao.NotificadoarEmail;
-
+import com.algafood.algafoodapi.notificacao.NotificadoarMSN;
 import com.algafood.algafoodapi.service.AtivacaoClienteService;
 
-@Configuration
+//@Configuration
 public class BeanConfig {
 
     @Bean
@@ -21,4 +21,8 @@ public class BeanConfig {
         return new NotificadoarEmail();
     }
 
+    @Bean
+    public NotificadoarMSN getNotificadoarMSN() {
+        return new NotificadoarMSN();
+    }
 }

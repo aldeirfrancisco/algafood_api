@@ -4,13 +4,13 @@ import org.springframework.stereotype.Component;
 
 import com.algafood.algafoodapi.modelo.Cliente;
 
-@TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)
+@TipoDoNotificador(NivelUrgencia.URGENTE)
 @Component
-public class NotificadoarEmail implements Notificador {
+public class NotificadoarMSN implements Notificador {
 
     @Override
     public void notificar(Cliente cliente, String mensagem) {
-        System.out.printf("Notificando %s através do e-mail %s: %s\n",
+        System.out.printf("Notificando %s através do MSN %s: %s\n",
                 cliente.getNome(), cliente.getEmail(), mensagem);
     }
 }
