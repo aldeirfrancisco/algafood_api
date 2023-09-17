@@ -31,4 +31,10 @@ public class CadastroCozinha {
         // o método merge não autera a instancia atribuido a ele.
         return manager.merge(cozinha);
     }
+
+    @Transactional // faz com que o metod seja executado dentro de uma transação
+    public void remover(Cozinha cozinha) {
+        cozinha = this.buscar(cozinha.getId());
+        manager.remove(cozinha);
+    }
 }
