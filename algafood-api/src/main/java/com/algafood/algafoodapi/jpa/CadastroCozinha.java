@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.algafoodapi.domain.model.Cozinha;
 
@@ -18,6 +19,11 @@ public class CadastroCozinha {
     public List<Cozinha> listar() {
         return manager.createQuery("from Cozinha", Cozinha.class)
                 .getResultList();
+    }
 
+    @Transactional // faz com que o metod seja executado dentro de uma transação
+    public Cozinha adicionar(Cozinha cozinha) {
+        // o método merge não autera a instancia atribuido a ele.
+        return manager.merge(cozinha);
     }
 }
