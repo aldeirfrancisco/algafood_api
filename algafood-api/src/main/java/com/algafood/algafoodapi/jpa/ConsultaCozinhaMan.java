@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import com.algafood.algafoodapi.domain.model.*;
 import com.algafood.algafoodapi.AlgafoodApiApplication;
 
-public class ConsultaConzinhaMan {
+public class ConsultaCozinhaMan {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)

@@ -21,6 +21,10 @@ public class CadastroCozinha {
                 .getResultList();
     }
 
+    public Cozinha buscar(Long id){
+        return manager.find(Cozinha.class, id);
+
+     }
     @Transactional // faz com que o metod seja executado dentro de uma transação
     public Cozinha adicionar(Cozinha cozinha) {
         // o método merge não autera a instancia atribuido a ele.
