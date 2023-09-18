@@ -1,4 +1,4 @@
-package com.algafood.algafoodapi.jpa;
+package com.algafood.algafoodapi.infrasTructure.repository;
 
 import java.util.List;
 
@@ -9,19 +9,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.algafoodapi.domain.model.Cozinha;
+import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 
 @Component
-public class CadastroCozinha {
+public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @PersistenceContext
     private EntityManager manager;
 
-    public List<Cozinha> listar() {
+    @Override
+    public List<Cozinha> todas() {
         return manager.createQuery("from Cozinha", Cozinha.class)
                 .getResultList();
     }
 
-    public Cozinha buscar(Long id) {
+    @Override
+    public Cozinha porId(Long id) {
         return manager.find(Cozinha.class, id);
 
     }
@@ -31,14 +34,16 @@ public class CadastroCozinha {
     // se uma de errado todas as outras vão ser desfeitas garantido a integridade do
     // banco de dados.
     @Transactional
-    public Cozinha salvar(Cozinha cozinha) {
+    @Override
+    public Cozinha adicionar(Cozinha cozinha) {
         // o método merge não autera a instancia atribuido a ele.
         return manager.merge(cozinha);
     }
 
     @Transactional // faz com que o metod seja executado dentro de uma transação
+    @Override
     public void remover(Cozinha cozinha) {
-        cozinha = this.buscar(cozinha.getId());
+        cozinha = this.porId(cozinha.getId());
         manager.remove(cozinha);
     }
 }

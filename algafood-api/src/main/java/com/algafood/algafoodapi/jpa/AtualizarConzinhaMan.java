@@ -6,6 +6,7 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import com.algafood.algafoodapi.domain.model.*;
+import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafood.algafoodapi.AlgafoodApiApplication;
 
 public class AtualizarConzinhaMan {
@@ -14,12 +15,12 @@ public class AtualizarConzinhaMan {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
-        CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
+        CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class);
         Cozinha cozinha = new Cozinha();
         cozinha.setId(1L);
         cozinha.setNome("Brasileira");
 
-        cozinha = cadastroCozinha.salvar(cozinha);
+        cozinha = cozinhas.adicionar(cozinha);
 
         System.out.printf("%d - %s\n", cozinha.getId(), cozinha.getNome());
     }
