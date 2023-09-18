@@ -26,7 +26,11 @@ public class CadastroCozinha {
 
     }
 
-    @Transactional // faz com que o metod seja executado dentro de uma transação
+    // e que essas transaçoes so garate que operações que deve acontece juntas só
+    // sejam comfirmadas se todas obtiverem sucesso,
+    // se uma de errado todas as outras vão ser desfeitas garantido a integridade do
+    // banco de dados.
+    @Transactional
     public Cozinha salvar(Cozinha cozinha) {
         // o método merge não autera a instancia atribuido a ele.
         return manager.merge(cozinha);
