@@ -1,0 +1,17 @@
+package com.algafood.algafoodapi.domain.repository;
+
+import java.util.List;
+
+import com.algafood.algafoodapi.domain.model.Restaurante;
+
+public interface RestouranteRepository {
+
+    List<Restaurante> listar();
+
+    Restaurante buscar(Long id);
+
+    Restaurante salvar(Restaurante restaurante);
+
+    void remover(Restaurante restaurante);
+
+}
