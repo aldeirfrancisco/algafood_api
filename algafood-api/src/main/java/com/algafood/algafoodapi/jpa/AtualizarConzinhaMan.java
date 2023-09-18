@@ -21,7 +21,6 @@ public class AtualizarConzinhaMan {
         cozinha.setNome("Brasileira");
 
         cozinha = cozinhas.adicionar(cozinha);
-
         System.out.printf("%d - %s\n", cozinha.getId(), cozinha.getNome());
     }
 
