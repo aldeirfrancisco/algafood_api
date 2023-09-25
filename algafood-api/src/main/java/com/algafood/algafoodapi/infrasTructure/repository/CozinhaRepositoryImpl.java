@@ -23,8 +23,8 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
                 .getResultList();
     }
 
-    @Override
-    public Cozinha porId(Long id) {
+    @Override()
+    public Cozinha buscar(Long id) {
         return manager.find(Cozinha.class, id);
 
     }
@@ -43,7 +43,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     @Transactional // faz com que o metod seja executado dentro de uma transação
     @Override
     public void remover(Cozinha cozinha) {
-        cozinha = this.porId(cozinha.getId());
+        cozinha = this.buscar(cozinha.getId());
         manager.remove(cozinha);
     }
 }
