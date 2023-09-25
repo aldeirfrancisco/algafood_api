@@ -6,7 +6,7 @@ import com.algafood.algafoodapi.domain.model.Estado;
 
 public interface EstadoRepository {
 
-    List<Estado> todas();
+    List<Estado> listar();
 
     Estado porId(Long id);
 
