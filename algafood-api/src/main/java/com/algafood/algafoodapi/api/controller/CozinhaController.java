@@ -38,10 +38,10 @@ public class CozinhaController {
         // return ResponseEntity.ok(conzinha);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LOCATION, "http://localhost:8080/cozinhas");
-        return ResponseEntity 
-                            .status(HttpStatus.FOUND)
-                            .headers(headers)
-                            .build();
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .headers(headers)
+                .build();
     }
 
 }
