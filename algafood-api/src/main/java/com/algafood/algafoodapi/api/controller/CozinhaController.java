@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
+import com.algafood.algafoodapi.domain.service.CadastroCozinhaService;
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
@@ -33,6 +34,8 @@ public class CozinhaController {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
+    @Autowired
+    private CadastroCozinhaService cadastroCozinha;
 
     @GetMapping
     public List<Cozinha> listar() {
@@ -55,7 +58,7 @@ public class CozinhaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void adicionar(@RequestBody Cozinha cozinha) {
-        cozinhaRepository.adicionar(cozinha);
+        cadastroCozinha.salvar(cozinha);
     }
 
     @PutMapping("/{cozinhaId}")
@@ -64,7 +67,7 @@ public class CozinhaController {
         Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
         if (cozinhaAtual != null) {
             BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
-            cozinhaRepository.adicionar(cozinhaAtual);
+            cozinhaRepository.salvar(cozinhaAtual);
             return ResponseEntity.ok().body(cozinhaAtual);
         }
         return ResponseEntity

@@ -35,7 +35,7 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     // banco de dados.
     @Transactional
     @Override
-    public Cozinha adicionar(Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         // o método merge não autera a instancia atribuido a ele.
         return manager.merge(cozinha);
     }
