@@ -24,6 +24,8 @@ import com.algafood.algafoodapi.domain.service.CadastroCozinhaService;
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
+import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoExeption;
+import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.model.Cozinha;
 
 //@ResponseBody garante que a resposta do metodo vai ser o corpo da requeiscao
@@ -77,14 +79,13 @@ public class CozinhaController {
     @DeleteMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> deletar(@PathVariable Long cozinhaId) {
         try {
-            Cozinha cozinhaAtual = cozinhaRepository.buscar(cozinhaId);
-            if (cozinhaAtual != null) {
-                cozinhaRepository.remover(cozinhaAtual);
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.notFound().build();
-        } catch (DataIntegrityViolationException e) {
+            cadastroCozinha.excluir(cozinhaId);
+            return ResponseEntity.noContent().build();
 
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.notFound().build();
+
+        } catch (EntidadeEmUsoExeption e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
