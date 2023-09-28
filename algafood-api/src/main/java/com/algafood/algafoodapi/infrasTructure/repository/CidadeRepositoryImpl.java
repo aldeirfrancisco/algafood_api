@@ -25,7 +25,7 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     }
 
     @Override
-    public Cidade porId(Long id) {
+    public Cidade buscar(Long id) {
         return manager.find(Cidade.class, id);
 
     }
@@ -36,15 +36,15 @@ public class CidadeRepositoryImpl implements CidadeRepository {
     // banco de dados.
     @Transactional
     @Override
-    public Cidade adicionar(Cidade cidade) {
+    public Cidade salvar(Cidade cidade) {
         // o método merge não autera a instancia atribuido a ele.
         return manager.merge(cidade);
     }
 
     @Transactional // faz com que o metod seja executado dentro de uma transação
     @Override
-    public void remover(Cidade cidade) {
-        cidade = this.porId(cidade.getId());
+    public void remover(Long cidadeId) {
+        Cidade cidade = this.buscar(cidadeId);
         manager.remove(cidade);
     }
 }
