@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.algafood.algafoodapi.domain.model.Restaurante;
 
-public interface RestouranteRepository {
+public interface RestauranteRepository {
 
     List<Restaurante> listar();
 

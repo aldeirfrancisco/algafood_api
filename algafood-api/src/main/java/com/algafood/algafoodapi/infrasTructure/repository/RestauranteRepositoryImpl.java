@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.algafoodapi.domain.model.Restaurante;
-import com.algafood.algafoodapi.domain.repository.RestouranteRepository;
+import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 
 @Component
-public class RestauranteRepositoryImpl implements RestouranteRepository {
+public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @PersistenceContext
     private EntityManager manager;
