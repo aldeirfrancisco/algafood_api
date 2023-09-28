@@ -24,7 +24,7 @@ import com.algafood.algafoodapi.domain.service.CadastroCozinhaService;
 
 import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
-import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoExeption;
+import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
 import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.model.Cozinha;
 
@@ -85,7 +85,7 @@ public class CozinhaController {
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
 
-        } catch (EntidadeEmUsoExeption e) {
+        } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
