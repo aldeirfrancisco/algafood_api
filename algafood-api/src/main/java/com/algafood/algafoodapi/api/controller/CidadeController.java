@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
 import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.model.Cidade;
-import com.algafood.algafoodapi.domain.model.Cozinha;
 import com.algafood.algafoodapi.domain.repository.CidadeRepository;
 import com.algafood.algafoodapi.domain.service.CadastroCidadeService;
 
@@ -77,7 +76,7 @@ public class CidadeController {
     }
 
     @DeleteMapping("/{cidadeId}")
-    public ResponseEntity<?> remover(@PathVariable Long cidadeId) {
+    public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
         try {
             cadastroCidade.excluir(cidadeId);
             return ResponseEntity.noContent().build();
@@ -86,8 +85,7 @@ public class CidadeController {
             return ResponseEntity.notFound().build();
 
         } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 }
