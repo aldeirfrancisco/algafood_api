@@ -13,17 +13,25 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.algafood.algafoodapi.domain.model.Restaurante;
+import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepositoryQueries;
+import static com.algafood.algafoodapi.infrasTructure.repository.spec.RestauranteSpec.*;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
     @PersistenceContext
     private EntityManager manager;
+
+    @Autowired
+    @Lazy // lazy faz com que o spring estaciar o repsoitory quando for preciso.
+    private RestauranteRepository restauranteRepository;
 
     @Override
     public List<Restaurante> find(String nome,
@@ -54,6 +62,12 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
         TypedQuery<Restaurante> query = manager.createQuery(criteria);
         return query.getResultList();
+    }
+
+    @Override
+    public List<Restaurante> findComFreteGratis(String nome) {
+        return restauranteRepository.findAll(comFreteGratis()
+                .and(comNomeSemelhante(nome)));
     }
     // @Override
     // public List<Restaurante> find(String nome,

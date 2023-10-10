@@ -13,7 +13,6 @@ import com.algafood.algafoodapi.domain.model.Cozinha;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
-import static com.algafood.algafoodapi.infrasTructure.repository.spec.RestauranteSpec.*;
 
 @RestController
 @RequestMapping("/teste")
@@ -76,6 +75,6 @@ public class TesteController {
     @GetMapping("/restaurantes/com-frete-gratis")
     public List<Restaurante> restaurantesComFreteGratis(String nome) {
 
-        return restauranteRepository.findAll(comFreteGratis().and(comNomeSemelhante(nome)));
+        return restauranteRepository.findComFreteGratis(nome);
     }
 }
