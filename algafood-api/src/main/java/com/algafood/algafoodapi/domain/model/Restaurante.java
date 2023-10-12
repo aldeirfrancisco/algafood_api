@@ -42,7 +42,12 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @ManyToOne
+    @ManyToOne // todos que termina com toOne usa a estrategia eager loading por
+               // padrão"carregamento
+               // antecipado" toda associacão vai ser carregada junto com a entidade. Gerando
+               // varios select.
+               // obs: quando a associação é eager pode ser que ele faz um join ou varios
+               // select separados
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
