@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +23,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -42,12 +44,15 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @ManyToOne // todos que termina com toOne usa a estrategia eager loading por
-               // padrão"carregamento
-               // antecipado" toda associacão vai ser carregada junto com a entidade. Gerando
-               // varios select.
-               // obs: quando a associação é eager pode ser que ele faz um join ou varios
-               // select separados
+    /*
+     * todos que termina com toOne usa a estrategia eager loading p
+     * padrão"carregamento antecipado" toda associacão vai ser carregada junto com a
+     * entidade. Gerando varios select.
+     * obs: quando a associação é eager pode ser que ele faz um join ou vario select
+     * separados
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("hibernateLazyInitializer")
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
