@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
 import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
 import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.model.Cozinha;
@@ -34,8 +35,8 @@ public class CadastroCozinhaService {
 
         } catch (EmptyResultDataAccessException e) {
 
-            throw new EntidadeNaoEncontradaException(
-                    String.format(MSG_COZINHA_NAO_ENCOTRADA, id));
+            throw new CozinhaNaoEncontradaException(id);
+
         } catch (DataIntegrityViolationException e) {
 
             throw new EntidadeEmUsoException(
@@ -45,6 +46,6 @@ public class CadastroCozinhaService {
 
     public Cozinha buscarOuFalhar(Long cozinhaId) {
         return cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(MSG_COZINHA_NAO_ENCOTRADA));
+                .orElseThrow(() -> new CozinhaNaoEncontradaException(cozinhaId));
     }
 }
