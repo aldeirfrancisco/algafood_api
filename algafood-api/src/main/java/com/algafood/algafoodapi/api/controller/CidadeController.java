@@ -88,30 +88,4 @@ public class CidadeController {
         }
     }
 
-    @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
-        /**
-         * Problema, class que customiza o corpo da mensagem
-         * 
-         * @Builder: anotecion do lonbok que ajuda
-         *           na criação de objeto
-         */
-        Problema problema = Problema.builder()
-                .dataHora(LocalDateTime.now())
-                .mensagem(e.getMessage()).build();
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(problema);
-    }
-
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> tratarNegocioException(NegocioException e) {
-
-        Problema problema = Problema.builder()
-                .dataHora(LocalDateTime.now())
-                .mensagem(e.getMessage()).build();
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(problema);
-    }
 }
