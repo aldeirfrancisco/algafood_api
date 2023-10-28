@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.algafoodapi.api.exceptionHandler.Problema;
@@ -49,6 +50,7 @@ public class CidadeController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Cidade adicionar(@RequestBody Cidade cidade) {
         try {
             return cadastroCidade.salvar(cidade);
@@ -75,17 +77,9 @@ public class CidadeController {
     }
 
     @DeleteMapping("/{cidadeId}")
-    public ResponseEntity<Cidade> remover(@PathVariable Long cidadeId) {
-        try {
-            cadastroCidade.excluir(cidadeId);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long cidadeId) {
+        cadastroCidade.excluir(cidadeId);
     }
 
 }

@@ -20,7 +20,7 @@ public class CadastroCozinhaService {
     /**
      *
      */
-    private static final String MSG_COZINHA_NAO_ENCOTRADA = "Não existe um cadastro de cozinha com o código %d ";
+
     @Autowired
     private CozinhaRepository cozinhaRepository;
 

@@ -18,8 +18,6 @@ public class CadastroCidadeService {
 
     private static final String MSG_CIDADE_EM_USO = "Cidade de código %d não pode ser removida, pois está em uso";
 
-    private static final String MSG_CIDADE_NAO_ENCONTRADA = "Não existe um cadastro de cidade com código %d";
-
     @Autowired
     private CidadeRepository cidadeRepository;
 
@@ -28,7 +26,9 @@ public class CadastroCidadeService {
 
     public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
+
         Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
+
         cidade.setEstado(estado);
 
         return cidadeRepository.save(cidade);
