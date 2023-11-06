@@ -25,12 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
-import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
+
 import com.algafood.algafoodapi.domain.Exception.NegocioException;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;
-import com.ctc.wstx.util.ExceptionUtil;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
