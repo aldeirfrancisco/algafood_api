@@ -23,6 +23,8 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -45,7 +47,7 @@ public class Restaurante {
     private Long id;
     // o notBlank está agrupa em um grupo de validação, vai validar todos que
     // temGroups.CadastroRestaurante.class e iguinorar os outros.
-    @NotBlank(groups = Groups.CadastroRestaurante.class)
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
@@ -61,7 +63,8 @@ public class Restaurante {
      * separados
      */
     @Valid
-    @NotNull(groups = Groups.CadastroRestaurante.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("hibernateLazyInitializer")
     @JoinColumn(name = "cozinha_id", nullable = false)
