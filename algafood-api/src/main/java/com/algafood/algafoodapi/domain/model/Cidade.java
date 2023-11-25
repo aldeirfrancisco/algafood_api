@@ -8,7 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
-import com.algafood.algafoodapi.Groups;
+
+import com.algafood.algafoodapi.core.validation.Groups;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
