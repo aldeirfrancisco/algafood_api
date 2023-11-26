@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.util.ReflectionUtils;
-
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.SmartValidator;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algafood.algafoodapi.core.validation.ValidacaoException;
 import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
 
 import com.algafood.algafoodapi.domain.Exception.NegocioException;
@@ -42,6 +44,9 @@ public class RestauranteController {
 
     @Autowired
     private RestauranteRepository restauranteRepository;
+
+    @Autowired
+    SmartValidator validator;
 
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;
@@ -94,7 +99,16 @@ public class RestauranteController {
             @RequestBody Map<String, Object> campos, HttpServletRequest request) {
         Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
         merge(campos, restauranteAtual, request);
+        validate(restauranteAtual, "restaurante");
         return atualizar(restauranteId, restauranteAtual);
+    }
+
+    private void validate(Restaurante restaurante, String objectName) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+        this.validator.validate(restaurante, bindingResult);
+        if (bindingResult.hasErrors()) {
+            throw new ValidacaoException(bindingResult);
+        }
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
