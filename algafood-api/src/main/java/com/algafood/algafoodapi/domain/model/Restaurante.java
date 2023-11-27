@@ -19,7 +19,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -32,7 +31,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.algafood.algafoodapi.core.validation.Groups;
 import com.algafood.algafoodapi.core.validation.Multiplo;
-import com.algafood.algafoodapi.core.validation.TaxaFrete;
 import com.algafood.algafoodapi.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
