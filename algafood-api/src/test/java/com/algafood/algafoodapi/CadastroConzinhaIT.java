@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 //@RunWith(SpringRunner.class) levanta o contexto do spring na hora de rodar o teste
 //@SpringBootTest fornece as funcionalidade do spring boot no teste.
 @SpringBootTest
-public class CadastroConzinhaIntegrationTests {
+public class CadastroConzinhaIT {
 
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
