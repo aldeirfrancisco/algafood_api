@@ -59,4 +59,15 @@ public class CadastroCozinhaIT {
         // objetos.
     }
 
+    @Test
+    public void deveRetornarStatus201_QuandoCadastrarCozinhas() {
+        given()
+                .body("{\"nome\": \"Chinesa\"}")
+                .contentType(ContentType.JSON)
+                .accept(ContentType.JSON)
+                .when()
+                .post()
+                .then()
+                .statusCode(HttpStatus.CREATED.value());
+    }
 }
