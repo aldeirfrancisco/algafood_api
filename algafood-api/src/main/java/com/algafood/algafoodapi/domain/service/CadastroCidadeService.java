@@ -7,11 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.algafood.algafoodapi.domain.Exception.CidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
-import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.model.Cidade;
 import com.algafood.algafoodapi.domain.model.Estado;
 import com.algafood.algafoodapi.domain.repository.CidadeRepository;
-import com.algafood.algafoodapi.domain.repository.EstadoRepository;
 
 @Service
 public class CadastroCidadeService {
