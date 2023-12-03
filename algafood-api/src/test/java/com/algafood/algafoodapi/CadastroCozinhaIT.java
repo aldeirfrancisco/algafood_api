@@ -4,9 +4,12 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
+import org.aspectj.lang.annotation.Before;
+
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -19,15 +22,21 @@ public class CadastroCozinhaIT {
     @LocalServerPort
     private int port;
 
+    // teste de callBaack será executado antes dos testes ser executados.
+    @BeforeEach
+    public void setUp() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.port = port;
+        RestAssured.basePath = "/cozinhas";
+    }
+
     @Test
     public void deveRetornarStatus200_QuandoConsultarCozinhas() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
         // RestAssured.enableLoggingOfRequestAndResponseIfValidationFails(); se a
         // quando a validação falhar, vai mostra no log da requisição enviada e a
         // responta.
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
@@ -37,11 +46,9 @@ public class CadastroCozinhaIT {
 
     @Test
     public void deveConter4Cozinha_QuandoConsultarCozinhas() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
 
         given()
                 .basePath("/cozinhas")
-                .port(port)
                 .accept(ContentType.JSON)
                 .when()
                 .get()
