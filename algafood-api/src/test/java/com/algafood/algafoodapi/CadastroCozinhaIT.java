@@ -4,9 +4,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
-import org.aspectj.lang.annotation.Before;
-import org.flywaydb.core.Flyway;
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
@@ -18,6 +15,10 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
+import com.algafood.algafoodapi.domain.model.Cozinha;
+import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
+import com.algafood.algafoodapi.util.DatabaseCleaner;
+
 //webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT =>  vai levantar um servidor web para os teste da API.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("/application-test.properties")
@@ -27,7 +28,13 @@ public class CadastroCozinhaIT {
     private int port;
 
     @Autowired
-    private Flyway flyway;
+    private DatabaseCleaner databaseCleaner; // responsalvel por limpa a tabela do banco
+
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
+
+    // @Autowired
+    // private Flyway flyway;
 
     // teste de callBaack será executado antes de cada métodos de testes ser
     // executados.
@@ -36,8 +43,12 @@ public class CadastroCozinhaIT {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
-        flyway.migrate(); // garatindo a integridade do banco, quando um método de teste roda o flyway vai
-                          // roda e voltando os dados original no banco.
+        databaseCleaner.clearTables();
+
+        prepararDados();
+        // flyway.migrate(); // garatindo a integridade do banco, quando um método de
+        // teste roda o flyway vai
+        // roda e voltando os dados original no banco.
     }
 
     @Test
@@ -63,8 +74,8 @@ public class CadastroCozinhaIT {
                 .when()
                 .get()
                 .then()
-                .body("", hasSize(4))
-                .body("nome", hasItems("Indiana", "Tailandesa"));
+                .body("", hasSize(2))
+                .body("nome", hasItems("Americana", "Tailandesa"));
         // Matchers biblioteca de escrever expressões com regra de correspondencia entre
         // objetos.
     }
@@ -79,5 +90,15 @@ public class CadastroCozinhaIT {
                 .post()
                 .then()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    private void prepararDados() {
+        Cozinha cozinha1 = new Cozinha();
+        cozinha1.setNome("Tailandesa");
+        cozinhaRepository.save(cozinha1);
+
+        Cozinha cozinha2 = new Cozinha();
+        cozinha2.setNome("Americana");
+        cozinhaRepository.save(cozinha2);
     }
 }
