@@ -1,5 +1,6 @@
 package com.algafood.algafoodapi.domain.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -29,14 +30,11 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // @JsonIgnore
-    // @JsonProperty("titulo")
     @NotBlank
     @Column(nullable = false)
     private String nome;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
-    private List<Restaurante> restaurante;
+    private List<Restaurante> restaurantes = new ArrayList<>();
 
 }
