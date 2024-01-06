@@ -2,6 +2,7 @@ package com.algafood.algafoodapi.domain.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,11 +79,11 @@ public class Restaurante {
 
     @CreationTimestamp
     @JoinColumn(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     @UpdateTimestamp
     @JoinColumn(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos = new ArrayList<>();
