@@ -1,7 +1,6 @@
 package com.algafood.algafoodapi.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +32,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.algafood.algafoodapi.core.validation.Groups;
 
 import com.algafood.algafoodapi.core.validation.ValorZeroIncluiDescricao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
