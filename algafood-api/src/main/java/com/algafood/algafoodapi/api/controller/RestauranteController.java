@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algafood.algafoodapi.api.asswmbler.RestauranteInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.RestauranteModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.RestauranteInput;
 import com.algafood.algafoodapi.api.model.dtooutput.RestauranteDTO;
@@ -46,6 +47,9 @@ public class RestauranteController {
     @Autowired
     private RestauranteModelAssembler restauranteModelAssembler;
 
+    @Autowired
+    private RestauranteInputDisassembler restauranteInputDisassembler;
+
     @GetMapping
     public List<RestauranteDTO> listar() {
         return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
@@ -64,7 +68,7 @@ public class RestauranteController {
 
         try {
 
-            Restaurante restaurante = toDomainObject(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException e) {
@@ -77,7 +81,7 @@ public class RestauranteController {
     public RestauranteDTO atualizar(@PathVariable Long restauranteId,
             @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = toDomainObject(restauranteInput);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
@@ -140,16 +144,4 @@ public class RestauranteController {
     // }
     // }
 
-    private Restaurante toDomainObject(RestauranteInput restauranteInput) {
-        Restaurante restaurante = new Restaurante();
-        restaurante.setNome(restauranteInput.getNome());
-        restaurante.setTaxaFrete(restauranteInput.getTaxaFrete());
-
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(restauranteInput.getCozinha().getId());
-
-        restaurante.setCozinha(cozinha);
-
-        return restaurante;
-    }
 }
