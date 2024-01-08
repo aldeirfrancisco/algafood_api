@@ -26,7 +26,7 @@ import com.algafood.algafoodapi.api.model.dtooutput.RestauranteDTO;
 import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
 
 import com.algafood.algafoodapi.domain.Exception.NegocioException;
-import com.algafood.algafoodapi.domain.model.Cozinha;
+
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;
