@@ -74,6 +74,8 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
+    private Boolean ativo = Boolean.TRUE;
+
     @CreationTimestamp
     @JoinColumn(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
@@ -88,4 +90,12 @@ public class Restaurante {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "restaurante_forma_pagamento", joinColumns = @JoinColumn(name = "restaurante_id"), inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    public void ativar() {
+        this.setAtivo(true);
+    }
+
+    public void inativar() {
+        this.setAtivo(false);
+    }
 }
