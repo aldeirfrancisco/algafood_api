@@ -8,10 +8,11 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.algafood.algafoodapi.domain.model.FormaPagamento;
-import com.algafood.algafoodapi.domain.repository.FormaPagamentoRepository;
+
+import com.algafood.algafoodapi.domain.repository.FormaPagamentoRepositoryQuery;
 
 @Component
-public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
+public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepositoryQuery {
 
     @PersistenceContext
     private EntityManager manager;
@@ -20,12 +21,6 @@ public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
     public List<FormaPagamento> todas() {
         return manager.createQuery("from Cozinha", FormaPagamento.class)
                 .getResultList();
-    }
-
-    @Override
-    public FormaPagamento porId(Long id) {
-        return manager.find(FormaPagamento.class, id);
-
     }
 
     // e que essas transaçoes so garate que operações que deve acontece juntas só
@@ -39,10 +34,4 @@ public class FormaPagamentoRepositoryImpl implements FormaPagamentoRepository {
         return manager.merge(formaPagamento);
     }
 
-    @Transactional // faz com que o metod seja executado dentro de uma transação
-    @Override
-    public void remover(FormaPagamento formaPagamento) {
-        formaPagamento = this.porId(formaPagamento.getId());
-        manager.remove(formaPagamento);
-    }
 }
