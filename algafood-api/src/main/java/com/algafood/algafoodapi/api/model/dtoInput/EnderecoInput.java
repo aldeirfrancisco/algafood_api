@@ -1,7 +1,5 @@
 package com.algafood.algafoodapi.api.model.dtoInput;
 
-import java.math.BigDecimal;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
