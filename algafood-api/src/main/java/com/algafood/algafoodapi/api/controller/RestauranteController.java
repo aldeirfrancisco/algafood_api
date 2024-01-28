@@ -22,6 +22,7 @@ import com.algafood.algafoodapi.api.asswmbler.RestauranteInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.RestauranteModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.RestauranteInput;
 import com.algafood.algafoodapi.api.model.dtooutput.RestauranteDTO;
+import com.algafood.algafoodapi.domain.Exception.CidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
 
 import com.algafood.algafoodapi.domain.Exception.NegocioException;
@@ -89,7 +90,7 @@ public class RestauranteController {
             // "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
             return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
     }
