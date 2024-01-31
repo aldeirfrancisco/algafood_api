@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +22,6 @@ import com.algafood.algafoodapi.api.model.dtoInput.GrupoInput;
 import com.algafood.algafoodapi.api.model.dtooutput.GrupoDTO;
 import com.algafood.algafoodapi.domain.model.Grupo;
 import com.algafood.algafoodapi.domain.repository.GrupoRepository;
-import com.algafood.algafoodapi.domain.service.CadastroCidadeService;
 import com.algafood.algafoodapi.domain.service.CadastroGrupoService;
 
 @RestController
