@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algafood.algafoodapi.domain.Exception.RestauranteNaoEncontradoException;
 import com.algafood.algafoodapi.domain.model.Cidade;
 import com.algafood.algafoodapi.domain.model.Cozinha;
+import com.algafood.algafoodapi.domain.model.FormaPagamento;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 
@@ -19,6 +20,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroCidadeService cadastroCidade;
+
+    @Autowired
+    private CadastroFormaPagamento cadastroFormaPagamento;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -44,6 +48,22 @@ public class CadastroRestauranteService {
     public void inativar(Long restauranteId) {
         Restaurante restaurante = this.buscarOuFalhar(restauranteId);
         restaurante.inativar();
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = this.cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.removeFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarFormapagamento(long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = this.cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.adicionarFormaPagamento(formaPagamento);
     }
 
     public Restaurante buscarOuFalhar(Long restauranteId) {
