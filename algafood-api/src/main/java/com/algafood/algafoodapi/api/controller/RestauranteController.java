@@ -26,7 +26,7 @@ import com.algafood.algafoodapi.domain.Exception.CidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
 
 import com.algafood.algafoodapi.domain.Exception.NegocioException;
-
+import com.algafood.algafoodapi.domain.Exception.RestauranteNaoEncontradoException;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;
@@ -119,6 +119,25 @@ public class RestauranteController {
         cadastroRestaurante.fechar(restauranteId);
     }
 
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarMultiplos(@RequestBody List<Long> restaurateIds) {
+        try {
+            cadastroRestaurante.ativar(restaurateIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativarMultiplos(@RequestBody List<Long> restaurateIds) {
+        try {
+            cadastroRestaurante.inativar(restaurateIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
     // @PatchMapping("/{restauranteId}")
     // public Restaurante atualizarParcial(@PathVariable Long restauranteId,
     // @RequestBody Map<String, Object> campos, HttpServletRequest request) {
