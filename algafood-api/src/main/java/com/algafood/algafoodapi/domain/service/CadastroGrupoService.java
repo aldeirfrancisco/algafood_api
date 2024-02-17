@@ -7,8 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
-import com.algafood.algafoodapi.domain.Exception.GrupoNaoEncontradoException;
+import com.algafood.algafoodapi.domain.exception.*;
 import com.algafood.algafoodapi.domain.model.Grupo;
 import com.algafood.algafoodapi.domain.model.Permissao;
 import com.algafood.algafoodapi.domain.repository.GrupoRepository;

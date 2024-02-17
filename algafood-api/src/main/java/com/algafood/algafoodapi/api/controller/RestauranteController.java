@@ -22,11 +22,7 @@ import com.algafood.algafoodapi.api.asswmbler.RestauranteInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.RestauranteModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.RestauranteInput;
 import com.algafood.algafoodapi.api.model.dtooutput.RestauranteDTO;
-import com.algafood.algafoodapi.domain.Exception.CidadeNaoEncontradaException;
-import com.algafood.algafoodapi.domain.Exception.CozinhaNaoEncontradaException;
-
-import com.algafood.algafoodapi.domain.Exception.NegocioException;
-import com.algafood.algafoodapi.domain.Exception.RestauranteNaoEncontradoException;
+import com.algafood.algafoodapi.domain.exception.*;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;

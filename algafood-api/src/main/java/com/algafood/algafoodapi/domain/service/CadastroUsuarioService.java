@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import com.algafood.algafoodapi.domain.Exception.CidadeNaoEncontradaException;
-import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
-import com.algafood.algafoodapi.domain.Exception.NegocioException;
-import com.algafood.algafoodapi.domain.Exception.UsuarioNaoEncontradoException;
+import com.algafood.algafoodapi.domain.exception.*;
 import com.algafood.algafoodapi.domain.model.Grupo;
 import com.algafood.algafoodapi.domain.model.Usuario;
 import com.algafood.algafoodapi.domain.repository.UsuarioRepository;
