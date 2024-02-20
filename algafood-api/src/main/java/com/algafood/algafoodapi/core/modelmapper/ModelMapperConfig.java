@@ -4,8 +4,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.algafood.algafoodapi.api.model.dtoInput.ItemPedidoInput;
 import com.algafood.algafoodapi.api.model.dtooutput.EnderecoDTO;
 import com.algafood.algafoodapi.domain.model.Endereco;
+import com.algafood.algafoodapi.domain.model.ItemPedido;
 
 @Configuration
 public class ModelMapperConfig {
@@ -23,6 +25,9 @@ public class ModelMapperConfig {
         enderecoToEnderecoModelTypeMap.<String>addMapping(
                 src -> src.getCidade().getEstado().getNome(),
                 (dest, value) -> dest.getCidade().setEstado(value));
+
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+                .addMappings(mapper -> mapper.skip(ItemPedido::setId));
         return modelMapper;
     }
 }
