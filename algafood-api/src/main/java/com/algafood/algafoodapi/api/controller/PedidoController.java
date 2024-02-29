@@ -28,10 +28,10 @@ import com.algafood.algafoodapi.api.model.dtooutput.PedidoResumoDTO;
 import com.algafood.algafoodapi.core.data.PageableTranslator;
 import com.algafood.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.exception.NegocioException;
+import com.algafood.algafoodapi.domain.filtro.PedidoFiltro;
 import com.algafood.algafoodapi.domain.model.Pedido;
 import com.algafood.algafoodapi.domain.model.Usuario;
 import com.algafood.algafoodapi.domain.repository.PedidoRepository;
-import com.algafood.algafoodapi.domain.repository.filter.PedidoFiltro;
 import com.algafood.algafoodapi.domain.service.EmissaoPedidoService;
 import com.algafood.algafoodapi.infrasTructure.repository.spec.PedidoSpec;
 
