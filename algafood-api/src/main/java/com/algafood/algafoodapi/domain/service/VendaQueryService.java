@@ -10,5 +10,5 @@ import com.algafood.algafoodapi.domain.model.dto.VendaDiaria;
 @Component
 public interface VendaQueryService {
 
-    List<VendaDiaria> consultaVendaDiarias(VendaDiariaFiltro filtro);
+    List<VendaDiaria> consultaVendaDiarias(VendaDiariaFiltro filtro, String timeOffSet);
 }

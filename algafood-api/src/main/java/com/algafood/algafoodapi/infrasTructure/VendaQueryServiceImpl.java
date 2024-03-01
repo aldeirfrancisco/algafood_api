@@ -23,13 +23,20 @@ public class VendaQueryServiceImpl implements VendaQueryService {
     private EntityManager manager;
 
     @Override
-    public List<VendaDiaria> consultaVendaDiarias(VendaDiariaFiltro filtro) {
+    public List<VendaDiaria> consultaVendaDiarias(VendaDiariaFiltro filtro, String timeOffSet) {
         var builder = manager.getCriteriaBuilder();
         var query = builder.createQuery(VendaDiaria.class);
         var root = query.from(Pedido.class);
         var predicates = new ArrayList<Predicate>();
 
-        var functionDateDataCriacao = builder.function("date", Date.class, root.get("dataCriacao"));
+        var functionConverterTzDataCriacao = builder.function(
+                "convert_tz",
+                Date.class, root.get("dataCriacao"),
+                builder.literal("+00:00"),
+                builder.literal(timeOffSet));
+
+        var functionDateDataCriacao = builder.function(
+                "date", Date.class, functionConverterTzDataCriacao);
 
         var selection = builder.construct(VendaDiaria.class,
                 functionDateDataCriacao,
@@ -56,6 +63,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         query.select(selection);
         query.where(predicates.toArray(new Predicate[0]));
         query.groupBy(functionDateDataCriacao);
+
         return manager.createQuery(query).getResultList();
     }
 
