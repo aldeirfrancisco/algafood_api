@@ -1,6 +1,6 @@
 package com.algafood.algafoodapi.infrasTructure.service.storage;
 
-import java.io.InputStream;
+import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-@Service
+//@Service
 public class S3FotoStorageService implements FotoStorageService {
 
     @Autowired
@@ -58,8 +58,11 @@ public class S3FotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
-        return null;
+    public FotoRecuperada recuperar(String nomeArquivo) {
+        String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+        URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), caminhoArquivo);
+
+        return FotoRecuperada.builder().url(url.toString()).build();
     }
 
     private String getCaminhoArquivo(String nomeArquivo) {
