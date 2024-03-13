@@ -3,7 +3,6 @@ package com.algafood.algafoodapi.infrasTructure.service.storage;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.algafood.algafoodapi.core.storage.StorageProperties;
 import com.algafood.algafoodapi.domain.exception.StorageException;
