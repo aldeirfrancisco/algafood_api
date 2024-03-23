@@ -22,7 +22,8 @@ public class FluxoPedidoService {
         pedido.confirmado();
         var msn = Mensagem.builder()
                 .assunto(pedido.getRestaurante().getNome())
-                .corpo("O pedido de código <strong>" + pedido.getId() + "</strong> foi confirmado")
+                .corpo("pedido-confirmado.html")
+                .variavel("nomeCliente", "João da silva")
                 .destinatario(pedido.getCliente().getEmail())
                 .build();
         envioEmail.envio(msn);

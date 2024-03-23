@@ -1,5 +1,6 @@
 package com.algafood.algafoodapi.domain.service;
 
+import java.util.Map;
 import java.util.Set;
 
 import lombok.Builder;
@@ -20,5 +21,8 @@ public interface EnvioEmailService {
         @NonNull
         private String assunto;
         private String corpo;
+
+        @Singular("variavel")
+        private Map<String, Object> variaveis;
     }
 }
