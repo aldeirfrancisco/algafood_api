@@ -21,9 +21,9 @@ public class FluxoPedidoService {
         Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
         pedido.confirmado();
         var msn = Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome())
+                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
                 .corpo("pedido-confirmado.html")
-                .variavel("nomeCliente", "João da silva")
+                .variavel("pedido", pedido)
                 .destinatario(pedido.getCliente().getEmail())
                 .build();
         envioEmail.envio(msn);
