@@ -22,9 +22,9 @@ public class FluxoPedidoService {
         pedido.confirmado();
 
         // para que o spring data disparado o event, é preciso chama o método save do
-        // repository esse repository tem que ser do spring data
+        // repository, esse repository tem que ser do spring data
         pedidoRepository.save(pedido);
-        // quando for feito o flush, discarregado no banco os evento que foram
+        // quando for feito o flush, discarregado no banco e os eventos que foram
         // registrados vai ser disparados
     }
 

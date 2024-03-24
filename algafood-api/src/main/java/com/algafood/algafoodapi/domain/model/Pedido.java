@@ -92,7 +92,8 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
         setDataConfirmacao(OffsetDateTime.now());
         // registrando o evento que deve ser disparado assim que o objeto pedido for
         // salvo.
-        registerEvent(new PedidoConfirmadoEvent(this));
+        registerEvent(new PedidoConfirmadoEvent(this));// passando o pedio para que possamos pega o pedido no ouvinte do
+                                                       // evento.
     }
 
     public void cancelar() {
