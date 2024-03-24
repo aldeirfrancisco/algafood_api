@@ -1,8 +1,8 @@
 package com.algafood.algafoodapi.domain.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.algafood.algafoodapi.domain.event.PedidoConfirmadoEvent;
 import com.algafood.algafoodapi.domain.model.Pedido;
@@ -14,10 +14,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
     @Autowired
     private EnvioEmailService envioEmail;
 
-    // sempre que o pedido for comfirmado, dispara um evento e
-    // quando o evento for disparado o spring chama esse método com a instacia do
-    // evento disparado
-    @EventListener // marcar o método com listener de evento
+    @TransactionalEventListener
     public void aoConfirmarPedido(PedidoConfirmadoEvent event) {
         Pedido pedido = event.getPedido();
         var msn = Mensagem.builder()
