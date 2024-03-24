@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algafood.algafoodapi.domain.event.PedidoCancelarEvent;
 import com.algafood.algafoodapi.domain.event.PedidoConfirmadoEvent;
 import com.algafood.algafoodapi.domain.exception.NegocioException;
 
@@ -99,6 +100,8 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
     public void cancelar() {
         setStatus(StatusPedido.CANCELADO);
         setDataConfirmacao(OffsetDateTime.now());
+
+        registerEvent(new PedidoCancelarEvent(this));
     }
 
     public void entregar() {
