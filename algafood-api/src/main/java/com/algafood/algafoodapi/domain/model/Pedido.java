@@ -19,16 +19,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algafood.algafoodapi.domain.event.PedidoConfirmadoEvent;
 import com.algafood.algafoodapi.domain.exception.NegocioException;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class Pedido {
+public class Pedido extends AbstractAggregateRoot<Pedido> {
 
     @EqualsAndHashCode.Include
     @Id
@@ -88,6 +90,9 @@ public class Pedido {
     public void confirmado() {
         setStatus(StatusPedido.CONFIRMADO);
         setDataConfirmacao(OffsetDateTime.now());
+        // registrando o evento que deve ser disparado assim que o objeto pedido for
+        // salvo.
+        registerEvent(new PedidoConfirmadoEvent(this));
     }
 
     public void cancelar() {

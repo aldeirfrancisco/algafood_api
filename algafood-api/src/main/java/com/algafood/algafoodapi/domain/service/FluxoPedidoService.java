@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algafood.algafoodapi.domain.model.Pedido;
-import com.algafood.algafoodapi.domain.service.EnvioEmailService.Mensagem;
+import com.algafood.algafoodapi.domain.repository.PedidoRepository;
 
 @Service
 public class FluxoPedidoService {
@@ -14,19 +14,18 @@ public class FluxoPedidoService {
     private EmissaoPedidoService emissaoPedidoService;
 
     @Autowired
-    private EnvioEmailService envioEmail;
+    private PedidoRepository pedidoRepository;
 
     @Transactional
     public void confirmar(Long pedidoId) {
         Pedido pedido = emissaoPedidoService.buscarOuFalhar(pedidoId);
         pedido.confirmado();
-        var msn = Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
-                .variavel("pedido", pedido)
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
-        envioEmail.envio(msn);
+
+        // para que o spring data disparado o event, é preciso chama o método save do
+        // repository esse repository tem que ser do spring data
+        pedidoRepository.save(pedido);
+        // quando for feito o flush, discarregado no banco os evento que foram
+        // registrados vai ser disparados
     }
 
     @Transactional
