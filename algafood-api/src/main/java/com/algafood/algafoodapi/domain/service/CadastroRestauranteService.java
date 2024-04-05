@@ -1,12 +1,17 @@
 package com.algafood.algafoodapi.domain.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
+import com.algafood.algafoodapi.domain.exception.*;
+import com.algafood.algafoodapi.domain.model.Cidade;
 import com.algafood.algafoodapi.domain.model.Cozinha;
+import com.algafood.algafoodapi.domain.model.FormaPagamento;
 import com.algafood.algafoodapi.domain.model.Restaurante;
-import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
+import com.algafood.algafoodapi.domain.model.Usuario;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
 
 @Service
@@ -14,17 +19,101 @@ public class CadastroRestauranteService {
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
-    private CozinhaRepository cozinhaRepository;
+    private CadastroCozinhaService cadastroCozinha;
 
+    @Autowired
+    private CadastroCidadeService cadastroCidade;
+
+    @Autowired
+    private CadastroFormaPagamento cadastroFormaPagamento;
+
+    @Autowired
+    private CadastroUsuarioService cadastroUsuario;
+
+    @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = this.cozinhaRepository.buscar(cozinhaId);
-        if (cozinha == null) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não existe cadastro de cozinha com o código %d", cozinhaId));
-        }
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
+
+        Cozinha cozinha = this.cadastroCozinha.buscarOuFalhar(cozinhaId);
+        Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
         restaurante.setCozinha(cozinha);
-        return restauranteRepository.salvar(restaurante);
+        restaurante.getEndereco().setCidade(cidade);
+
+        return (Restaurante) restauranteRepository.save(restaurante);
+    }
+
+    @Transactional
+    public void ativar(Long restauranteId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        restaurante.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long restauranteId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        restaurante.inativar();
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = this.cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.removeFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarFormapagamento(long restauranteId, Long formaPagamentoId) {
+        Restaurante restaurante = this.buscarOuFalhar(restauranteId);
+        FormaPagamento formaPagamento = this.cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+        restaurante.adicionarFormaPagamento(formaPagamento);
+    }
+
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return this.restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
+    }
+
+    @Transactional
+    public void abrir(Long restauranteId) {
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.abrir();
+    }
+
+    @Transactional
+    public void fechar(Long restauranteId) {
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.fechar();
+    }
+
+    @Transactional
+    public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.removerResponsavel(usuario);
+    }
+
+    @Transactional
+    public void associarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.adicionarResponsavel(usuario);
+    }
+
+    @Transactional
+    public void ativar(List<Long> restauranteIds) {
+        restauranteIds.forEach(this::ativar);
+    }
+
+    @Transactional
+    public void inativar(List<Long> restauranteIds) {
+        restauranteIds.forEach(this::inativar);
     }
 }

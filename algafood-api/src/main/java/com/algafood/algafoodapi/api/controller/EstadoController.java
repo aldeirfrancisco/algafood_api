@@ -2,10 +2,10 @@ package com.algafood.algafoodapi.api.controller;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algafood.algafoodapi.domain.Exception.EntidadeEmUsoException;
-import com.algafood.algafoodapi.domain.Exception.EntidadeNaoEncontradaException;
+import com.algafood.algafoodapi.api.asswmbler.EstadoInputDisassembler;
+import com.algafood.algafoodapi.api.asswmbler.EstadoModelAssembler;
+import com.algafood.algafoodapi.api.model.dtoInput.EstadoInput;
+import com.algafood.algafoodapi.api.model.dtooutput.EstadoDTO;
 import com.algafood.algafoodapi.domain.model.Estado;
 import com.algafood.algafoodapi.domain.repository.EstadoRepository;
 import com.algafood.algafoodapi.domain.service.CadastroEstadoService;
@@ -28,58 +30,56 @@ public class EstadoController {
 
     @Autowired
     private EstadoRepository estadoRepository;
+
     @Autowired
     private CadastroEstadoService cadastroEstado;
 
+    @Autowired
+    private EstadoModelAssembler estadoModelAssembler;
+
+    @Autowired
+    private EstadoInputDisassembler estadoInputDisassembler;
+
     @GetMapping
-    private List<Estado> listar() {
-        return estadoRepository.listar();
+    public List<EstadoDTO> listar() {
+        List<Estado> todosEstados = estadoRepository.findAll();
+
+        return estadoModelAssembler.toCollectionDTO(todosEstados);
     }
 
     @GetMapping("/{estadoId}")
-    public ResponseEntity<Estado> buscar(@PathVariable Long estadoId) {
-        Estado estado = estadoRepository.buscar(estadoId);
+    public EstadoDTO buscar(@PathVariable Long estadoId) {
+        Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
 
-        if (estado != null) {
-            return ResponseEntity.ok(estado);
-        }
-
-        return ResponseEntity.notFound().build();
+        return estadoModelAssembler.toDTO(estado);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado adicionar(@RequestBody Estado estado) {
-        return cadastroEstado.salvar(estado);
+    public EstadoDTO adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+        Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
+
+        estado = cadastroEstado.salvar(estado);
+
+        return estadoModelAssembler.toDTO(estado);
     }
 
     @PutMapping("/{estadoId}")
-    public ResponseEntity<Estado> atualizar(@PathVariable Long estadoId,
-            @RequestBody Estado estado) {
-        Estado estadoAtual = estadoRepository.buscar(estadoId);
+    public EstadoDTO atualizar(@PathVariable Long estadoId,
+            @RequestBody @Valid EstadoInput estadoInput) {
+        Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 
-        if (estadoAtual != null) {
-            BeanUtils.copyProperties(estado, estadoAtual, "id");
+        estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
 
-            estadoAtual = cadastroEstado.salvar(estadoAtual);
-            return ResponseEntity.ok(estadoAtual);
-        }
+        estadoAtual = cadastroEstado.salvar(estadoAtual);
 
-        return ResponseEntity.notFound().build();
+        return estadoModelAssembler.toDTO(estadoAtual);
     }
 
     @DeleteMapping("/{estadoId}")
-    public ResponseEntity<?> remover(@PathVariable Long estadoId) {
-        try {
-            cadastroEstado.excluir(estadoId);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
-
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long estadoId) {
+        cadastroEstado.excluir(estadoId);
     }
+
 }

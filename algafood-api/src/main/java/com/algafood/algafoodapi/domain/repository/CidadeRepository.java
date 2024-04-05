@@ -1,17 +1,10 @@
 package com.algafood.algafoodapi.domain.repository;
 
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
 import com.algafood.algafoodapi.domain.model.Cidade;
 
-public interface CidadeRepository {
-
-    List<Cidade> listar();
-
-    Cidade buscar(Long id);
-
-    Cidade salvar(Cidade cidade);
-
-    void remover(Long cidadeId);
+@Repository
+public interface CidadeRepository extends CustomJpaRepository<Cidade, Long> {
 
 }
