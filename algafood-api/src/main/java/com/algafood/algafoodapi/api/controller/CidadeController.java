@@ -5,8 +5,11 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,10 +53,20 @@ public class CidadeController {
 
     @ApiOperation("Lista as cidades")
     @GetMapping
-    public List<CidadeDTO> listar() {
+    public CollectionModel<CidadeDTO> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
+        List<CidadeDTO> cidadesDTO = cidadeModelAssembler.toCollectionModel(todasCidades);
+        CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadesDTO);
 
-        return cidadeModelAssembler.toCollectionModel(todasCidades);
+        cidadesCollectionModel.forEach(cidadeDTO -> {
+            cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+            cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+            cidadeDTO.getEstado().add(
+                    linkTo(methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
+        });
+
+        cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
+        return cidadesCollectionModel;
     }
 
     @ApiOperation("Busca uma cidade por ID")
@@ -62,10 +75,10 @@ public class CidadeController {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
         CidadeDTO cidadeDTO = cidadeModelAssembler.toDto(cidade);
 
-        cidadeDTO.add(linkTo(CidadeController.class).slash(cidadeDTO.getId()).withSelfRel());
-        cidadeDTO.add(linkTo(CidadeController.class).withRel("cidades"));
+        cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+        cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
         cidadeDTO.getEstado().add(
-                linkTo(CidadeController.class).slash(cidadeDTO.getEstado().getId()).withSelfRel());
+                linkTo(methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
         return cidadeDTO;
     }
 
