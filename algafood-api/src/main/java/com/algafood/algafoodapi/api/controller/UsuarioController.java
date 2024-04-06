@@ -1,10 +1,9 @@
 package com.algafood.algafoodapi.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,20 +40,20 @@ public class UsuarioController {
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
     @GetMapping
-    public List<UsuarioDTO> lista() {
+    public CollectionModel<UsuarioDTO> lista() {
         return this.usuarioModelAssembler.toCollectionModel(this.usuarioRepository.findAll());
     }
 
     @GetMapping("/{usuarioId}")
     public UsuarioDTO buscar(@PathVariable Long usuarioId) {
-        return this.usuarioModelAssembler.toDto(this.cadastroUsuarioService.buscarOuFalhar(usuarioId));
+        return this.usuarioModelAssembler.toModel(this.cadastroUsuarioService.buscarOuFalhar(usuarioId));
     }
 
     @PostMapping
     public UsuarioDTO adicionar(@RequestBody @Valid UsuarioInput usuarioInput) {
 
         Usuario usuario = this.usuarioInputDisassembler.toDomainObject(usuarioInput);
-        return this.usuarioModelAssembler.toDto(this.cadastroUsuarioService.salvar(usuario));
+        return this.usuarioModelAssembler.toModel(this.cadastroUsuarioService.salvar(usuario));
     }
 
     @PutMapping("/{usuarioId}")
@@ -63,7 +62,7 @@ public class UsuarioController {
 
         Usuario usuario = this.cadastroUsuarioService.buscarOuFalhar(usuarioId);
         this.usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuario);
-        return this.usuarioModelAssembler.toDto(this.cadastroUsuarioService.salvar(usuario));
+        return this.usuarioModelAssembler.toModel(this.cadastroUsuarioService.salvar(usuario));
     }
 
     @PutMapping("/{usuarioId}/senha")
