@@ -7,9 +7,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,31 +52,16 @@ public class CidadeController {
     @GetMapping
     public CollectionModel<CidadeDTO> listar() {
         List<Cidade> todasCidades = cidadeRepository.findAll();
-        List<CidadeDTO> cidadesDTO = cidadeModelAssembler.toCollectionModel(todasCidades);
-        CollectionModel<CidadeDTO> cidadesCollectionModel = CollectionModel.of(cidadesDTO);
+        return cidadeModelAssembler.toCollectionModel(todasCidades);
 
-        cidadesCollectionModel.forEach(cidadeDTO -> {
-            cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-            cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-            cidadeDTO.getEstado().add(
-                    linkTo(methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-        });
-
-        cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
-        return cidadesCollectionModel;
     }
 
     @ApiOperation("Busca uma cidade por ID")
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
-        CidadeDTO cidadeDTO = cidadeModelAssembler.toDto(cidade);
 
-        cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
-        cidadeDTO.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-        cidadeDTO.getEstado().add(
-                linkTo(methodOn(EstadoController.class).buscar(cidadeDTO.getEstado().getId())).withSelfRel());
-        return cidadeDTO;
+        return cidadeModelAssembler.toModel(cidade);
     }
 
     @ApiOperation("Cadastra uma cidade")
@@ -92,7 +74,7 @@ public class CidadeController {
 
             cidade = cadastroCidade.salvar(cidade);
 
-            return cidadeModelAssembler.toDto(cidade);
+            return cidadeModelAssembler.toModel(cidade);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
@@ -109,7 +91,7 @@ public class CidadeController {
 
             cidadeAtual = cadastroCidade.salvar(cidadeAtual);
 
-            return cidadeModelAssembler.toDto(cidadeAtual);
+            return cidadeModelAssembler.toModel(cidadeAtual);
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
