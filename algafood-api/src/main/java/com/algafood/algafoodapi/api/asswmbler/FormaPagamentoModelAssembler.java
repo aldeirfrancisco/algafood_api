@@ -18,13 +18,13 @@ public class FormaPagamentoModelAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public FormaPagamentoDTO toDTO(FormaPagamento formaPagamento) {
+    public FormaPagamentoDTO toModel(FormaPagamento formaPagamento) {
         return modelMapper.map(formaPagamento, FormaPagamentoDTO.class);
     }
 
     public List<FormaPagamentoDTO> toCollectionDTO(Collection<FormaPagamento> formaPagamentos) {
         return formaPagamentos.stream()
-                .map(formaPagamento -> toDTO(formaPagamento))
+                .map(formaPagamento -> toModel(formaPagamento))
                 .collect(Collectors.toList());
     }
 }

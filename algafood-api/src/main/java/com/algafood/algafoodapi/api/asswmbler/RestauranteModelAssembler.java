@@ -25,4 +25,5 @@ public class RestauranteModelAssembler {
                 .map(restaurante -> toDTO(restaurante))
                 .collect(Collectors.toList());
     }
+
 }
