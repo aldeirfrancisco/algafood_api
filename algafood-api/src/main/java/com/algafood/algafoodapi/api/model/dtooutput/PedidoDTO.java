@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class PedidoDTO {
+public class PedidoDTO extends RepresentationModel<PedidoDTO> {
     private Long id;
     private BigDecimal subtotal;
     private BigDecimal taxaFrete;

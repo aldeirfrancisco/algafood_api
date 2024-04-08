@@ -46,6 +46,7 @@ public class CozinhaController {
     @Autowired
     private CozinhaInputDisassembler cozinhaInputDisassembler;
 
+    @SuppressWarnings("rawtypes")
     @Autowired
     private PagedResourcesAssembler pagedResourcesAssembler;
 
