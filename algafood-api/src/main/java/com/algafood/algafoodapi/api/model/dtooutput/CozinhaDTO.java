@@ -1,11 +1,15 @@
 package com.algafood.algafoodapi.api.model.dtooutput;
 
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
+
 import lombok.Getter;
 import lombok.Setter;
 
+@Relation(collectionRelation = "cozinhas")
 @Getter
 @Setter
-public class CozinhaDTO {
+public class CozinhaDTO extends RepresentationModel<CozinhaDTO> {
 
     private Long id;
     private String nome;

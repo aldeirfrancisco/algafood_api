@@ -1,27 +1,38 @@
 package com.algafood.algafoodapi.api.asswmbler;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.algafood.algafoodapi.api.controller.CozinhaController;
 import com.algafood.algafoodapi.api.model.dtooutput.CozinhaDTO;
 import com.algafood.algafoodapi.domain.model.Cozinha;
 
 @Component
-public class CozinhaModelAssembler {
+public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<Cozinha, CozinhaDTO> {
+
+    public CozinhaModelAssembler() {
+        super(CozinhaController.class, CozinhaDTO.class);
+
+    }
+
     @Autowired
     private ModelMapper modelMapper;
 
-    public CozinhaDTO toDTO(Cozinha cozinha) {
-        return modelMapper.map(cozinha, CozinhaDTO.class);
+    @Override
+    public CozinhaDTO toModel(Cozinha cozinha) {
+        CozinhaDTO cozinhaDTO = createModelWithId(cozinha.getId(), cozinha);
+        modelMapper.map(cozinha, cozinhaDTO);
+        cozinhaDTO.add(linkTo(CozinhaController.class).withRel("cozinhas"));
+        return cozinhaDTO;
     }
 
-    public List<CozinhaDTO> toCollectionModel(List<Cozinha> cozinhas) {
-        return cozinhas.stream()
-                .map(cozinha -> toDTO(cozinha))
-                .collect(Collectors.toList());
+    @Override
+    public CollectionModel<CozinhaDTO> toCollectionModel(Iterable<? extends Cozinha> cozinhas) {
+        return super.toCollectionModel(cozinhas).add(linkTo(CozinhaController.class).withSelfRel());
     }
 }
