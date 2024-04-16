@@ -6,9 +6,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.stereotype.Component;
-
 import com.algafood.algafoodapi.api.controller.CidadeController;
 import com.algafood.algafoodapi.api.controller.FormaPagamentoController;
 import com.algafood.algafoodapi.api.controller.PedidoController;
@@ -17,6 +14,13 @@ import com.algafood.algafoodapi.api.controller.RestauranteProdutoController;
 import com.algafood.algafoodapi.api.controller.UsuarioController;
 import com.algafood.algafoodapi.api.model.dtooutput.PedidoDTO;
 import com.algafood.algafoodapi.domain.model.Pedido;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariable.VariableType;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoDTO> {
@@ -31,7 +35,16 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
     public PedidoDTO toModel(Pedido pedido) {
         PedidoDTO pedidoDTO = modelMapper.map(pedido, PedidoDTO.class);
-        pedidoDTO.add(linkTo(methodOn(PedidoController.class, pedidoDTO).buscar(pedidoDTO.getId())).withSelfRel());
+        // pedidoDTO.add(linkTo(methodOn(PedidoController.class,
+        // pedidoDTO).buscar(pedidoDTO.getId())).withSelfRel());
+        TemplateVariables pageVariables = new TemplateVariables(
+                new TemplateVariable("page", VariableType.REQUEST_PARAM),
+                new TemplateVariable("size", VariableType.REQUEST_PARAM),
+                new TemplateVariable("sort", VariableType.REQUEST_PARAM));
+
+        String pedidosUrl = linkTo(PedidoController.class).toUri().toString();
+        pedidoDTO.add(Link.of(UriTemplate.of(pedidosUrl, pageVariables), "pedidos"));
+
         pedidoDTO.add(linkTo(PedidoController.class).withRel("pedidos"));
 
         pedidoDTO.getRestaurante().add(linkTo(methodOn(RestauranteController.class, pedidoDTO.getRestaurante())
