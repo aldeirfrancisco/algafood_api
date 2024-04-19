@@ -26,4 +26,5 @@ public class PedidoDTO extends RepresentationModel<PedidoDTO> {
     private FormaPagamentoDTO formaPagamento;
     private EnderecoDTO enderecoEntrega;
     private List<ItemPedidoDTO> itens;
+
 }

@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.validation.SmartValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -47,15 +49,15 @@ public class RestauranteController {
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
     @GetMapping
-    public List<RestauranteDTO> listar() {
-        return restauranteModelAssembler.toCollectionDTO(restauranteRepository.findAll());
+    public CollectionModel<RestauranteDTO> listar() {
+        return restauranteModelAssembler.toCollectionModel(restauranteRepository.findAll());
     }
 
     @GetMapping("/{restauranteId}")
     public RestauranteDTO buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-        return restauranteModelAssembler.toDTO(restaurante);
+        return restauranteModelAssembler.toModel(restaurante);
     }
 
     @PostMapping
@@ -66,7 +68,7 @@ public class RestauranteController {
 
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
-            return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restaurante));
+            return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -85,7 +87,7 @@ public class RestauranteController {
             // BeanUtils.copyProperties(restaurante, restauranteAtual,
             // "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
 
-            return restauranteModelAssembler.toDTO(cadastroRestaurante.salvar(restauranteAtual));
+            return restauranteModelAssembler.toModel(cadastroRestaurante.salvar(restauranteAtual));
         } catch (CozinhaNaoEncontradaException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
@@ -93,26 +95,33 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ativar(@PathVariable long restauranteId) {
+    public ResponseEntity<Void> ativar(@PathVariable long restauranteId) {
         cadastroRestaurante.ativar(restauranteId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inativar(@PathVariable long restauranteId) {
+    public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
         cadastroRestaurante.inativar(restauranteId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void abrir(@PathVariable Long restauranteId) {
+    public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
         cadastroRestaurante.abrir(restauranteId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void fechar(@PathVariable Long restauranteId) {
+    public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {
         cadastroRestaurante.fechar(restauranteId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/ativacoes")
