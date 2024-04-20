@@ -48,11 +48,6 @@ public class AlgaLinks {
                 PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
     }
 
-    public Link linkToConfirmacaoPedido(Long codigoPedido, String rel) {
-        return linkTo(methodOn(FluxoPedidoController.class)
-                .confirmar(codigoPedido)).withRel(rel);
-    }
-
     public Link linkToEntregaPedido(Long codigoPedido, String rel) {
         return linkTo(methodOn(FluxoPedidoController.class)
                 .entregar(codigoPedido)).withRel(rel);
@@ -110,6 +105,15 @@ public class AlgaLinks {
 
         return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
                 .desassociar(restauranteId, usuarioId)).withRel(rel);
+    }
+
+    public Link linkToProdutos(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteProdutoController.class)
+                .listar(restauranteId, null)).withRel(rel);
+    }
+
+    public Link linkToProdutos(Long restauranteId) {
+        return linkToProdutos(restauranteId, IanaLinkRelations.SELF.value());
     }
 
     public Link linkToRestauranteResponsavelAssociacao(
