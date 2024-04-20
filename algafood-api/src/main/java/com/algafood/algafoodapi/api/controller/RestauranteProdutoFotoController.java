@@ -35,7 +35,7 @@ import com.algafood.algafoodapi.domain.service.FotoStorageService.FotoRecuperada
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
-public class RestauraneProdutoFotoController {
+public class RestauranteProdutoFotoController {
 
     @Autowired
     private CatalogoFotoProdutoService catalogoFotoProdutoService;
@@ -62,13 +62,13 @@ public class RestauraneProdutoFotoController {
         foto.setNomeArquivo(arquivo.getName());
 
         FotoProduto fotoSalva = this.catalogoFotoProdutoService.salvar(foto, arquivo.getInputStream());
-        return this.fotoProdutoAssembler.toDto(fotoSalva);
+        return this.fotoProdutoAssembler.toModel(fotoSalva);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public FotoProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable long produtoId) {
         FotoProduto foto = catalogoFotoProdutoService.buscarOuFalhar(restauranteId, produtoId);
-        return this.fotoProdutoAssembler.toDto(foto);
+        return this.fotoProdutoAssembler.toModel(foto);
     }
 
     @GetMapping

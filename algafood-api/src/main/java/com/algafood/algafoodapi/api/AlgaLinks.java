@@ -20,6 +20,7 @@ import com.algafood.algafoodapi.api.controller.PedidoController;
 import com.algafood.algafoodapi.api.controller.RestauranteController;
 import com.algafood.algafoodapi.api.controller.RestauranteFormaPagamentoController;
 import com.algafood.algafoodapi.api.controller.RestauranteProdutoController;
+import com.algafood.algafoodapi.api.controller.RestauranteProdutoFotoController;
 import com.algafood.algafoodapi.api.controller.RestauranteUsuarioResponsavelController;
 import com.algafood.algafoodapi.api.controller.UsuarioController;
 import com.algafood.algafoodapi.api.controller.UsuarioGrupoController;
@@ -46,6 +47,20 @@ public class AlgaLinks {
 
         return Link.of(UriTemplate.of(pedidosUrl,
                 PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
+    }
+
+    public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
+        return linkTo(methodOn(RestauranteProdutoFotoController.class)
+                .buscar(restauranteId, produtoId)).withRel(rel);
+    }
+
+    public Link linkToFotoProduto(Long restauranteId, Long produtoId) {
+        return linkToFotoProduto(restauranteId, produtoId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToConfirmacaoPedido(Long codigoPedido, String rel) {
+        return linkTo(methodOn(FluxoPedidoController.class)
+                .confirmar(codigoPedido)).withRel(rel);
     }
 
     public Link linkToEntregaPedido(Long codigoPedido, String rel) {
