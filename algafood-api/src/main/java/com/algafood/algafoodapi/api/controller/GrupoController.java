@@ -1,10 +1,9 @@
 package com.algafood.algafoodapi.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,13 +39,14 @@ public class GrupoController {
     private CadastroGrupoService grupoService;
 
     @GetMapping
-    public List<GrupoDTO> listar() {
+    public CollectionModel<GrupoDTO> listar() {
         return grupoModelAssembler.toCollectionModel(grupoRepository.findAll());
+
     }
 
     @GetMapping("/{grupoId}")
     public GrupoDTO buscar(@PathVariable Long grupoId) {
-        return grupoModelAssembler.toDTO(grupoService.buscarOuFalhar(grupoId));
+        return grupoModelAssembler.toModel(grupoService.buscarOuFalhar(grupoId));
     }
 
     @PostMapping
@@ -54,7 +54,7 @@ public class GrupoController {
     public GrupoDTO salvar(@RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupo = grupoInputDissassembler.toDomainObject(grupoInput);
 
-        return grupoModelAssembler.toDTO(grupoService.salvar(grupo));
+        return grupoModelAssembler.toModel(grupoService.salvar(grupo));
     }
 
     @DeleteMapping("/{grupoId}")
@@ -69,6 +69,6 @@ public class GrupoController {
         grupoInputDissassembler.copyToDomainObject(grupoInput, grupo);
 
         grupo = grupoService.salvar(grupo);
-        return grupoModelAssembler.toDTO(grupo);
+        return grupoModelAssembler.toModel(grupo);
     }
 }

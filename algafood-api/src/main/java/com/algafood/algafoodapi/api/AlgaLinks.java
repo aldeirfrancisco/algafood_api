@@ -16,6 +16,8 @@ import com.algafood.algafoodapi.api.controller.CozinhaController;
 import com.algafood.algafoodapi.api.controller.EstadoController;
 import com.algafood.algafoodapi.api.controller.FluxoPedidoController;
 import com.algafood.algafoodapi.api.controller.FormaPagamentoController;
+import com.algafood.algafoodapi.api.controller.GrupoController;
+import com.algafood.algafoodapi.api.controller.GrupoPermissaoController;
 import com.algafood.algafoodapi.api.controller.PedidoController;
 import com.algafood.algafoodapi.api.controller.RestauranteController;
 import com.algafood.algafoodapi.api.controller.RestauranteFormaPagamentoController;
@@ -47,6 +49,24 @@ public class AlgaLinks {
 
         return Link.of(UriTemplate.of(pedidosUrl,
                 PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
+    }
+
+    public Link linkToGrupo(String rel) {
+        return linkTo(GrupoController.class).withRel(rel);
+    }
+
+    public Link linkToGrupo() {
+        return linkToRestaurantes(IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToGrupoPermissoes(Long grupoId, String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class)
+                .listar(grupoId)).withRel(rel);
+    }
+
+    public Link linkToGrupoPermissoes(String rel) {
+        return linkTo(GrupoPermissaoController.class)
+                .withRel(rel);
     }
 
     public Link linkToFotoProduto(Long restauranteId, Long produtoId, String rel) {
