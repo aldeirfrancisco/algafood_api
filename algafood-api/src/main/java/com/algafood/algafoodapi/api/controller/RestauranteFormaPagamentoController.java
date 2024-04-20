@@ -41,11 +41,13 @@ public class RestauranteFormaPagamentoController {
         CollectionModel<FormaPagamentoDTO> formasPagamentoModel = formaPagamentoModelAssembler
                 .toCollectionModel(restaurante.getFormasPagamento())
                 .removeLinks()
-                .add(algaLinks.linkToRestauranteFormasPagamento(restauranteId));
+                .add(algaLinks.linkToRestauranteFormasPagamento(restauranteId))
+                .add(algaLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
 
         formasPagamentoModel.getContent().forEach(formaPagamentoModel -> {
             formaPagamentoModel.add(algaLinks.linkToRestauranteFormaPagamentoDesassociacao(
                     restauranteId, formaPagamentoModel.getId(), "desassociar"));
+
         });
 
         return formasPagamentoModel;
@@ -61,8 +63,9 @@ public class RestauranteFormaPagamentoController {
 
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associarFormapagamento(@PathVariable long restauranteId, @PathVariable Long formaPagamentoId) {
+    public ResponseEntity<Void> associarFormapagamento(@PathVariable long restauranteId,
+            @PathVariable Long formaPagamentoId) {
         cadastroRestaurante.associarFormapagamento(restauranteId, formaPagamentoId);
-
+        return ResponseEntity.noContent().build();
     }
 }
