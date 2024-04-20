@@ -105,6 +105,20 @@ public class AlgaLinks {
                 .associarFormapagamento(restauranteId, null)).withRel(rel);
     }
 
+    public Link linkToRestauranteResponsavelDesassociacao(
+            Long restauranteId, Long usuarioId, String rel) {
+
+        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                .desassociar(restauranteId, usuarioId)).withRel(rel);
+    }
+
+    public Link linkToRestauranteResponsavelAssociacao(
+            Long restauranteId, String rel) {
+
+        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+                .desassociar(restauranteId, null)).withRel(rel);
+    }
+
     public Link linkToRestauranteAbertura(Long restauranteId, String rel) {
         return linkTo(methodOn(RestauranteController.class)
                 .abrir(restauranteId)).withRel(rel);
