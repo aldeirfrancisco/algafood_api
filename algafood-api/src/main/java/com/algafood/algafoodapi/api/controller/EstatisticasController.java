@@ -16,14 +16,14 @@ import com.algafood.algafoodapi.api.AlgaLinks;
 import com.algafood.algafoodapi.domain.filtro.VendaDiariaFilter;
 import com.algafood.algafoodapi.domain.model.dto.VendaDiaria;
 import com.algafood.algafoodapi.domain.service.VendaQueryService;
-import com.algafood.algafoodapi.domain.service.VendaReportService;
+//import com.algafood.algafoodapi.domain.service.VendaReportService;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
 public class EstatisticasController {
 
-    @Autowired
-    private VendaReportService vendaReportService;
+    // @Autowired
+    // private VendaReportService vendaReportService;
 
     @Autowired
     private VendaQueryService vendaQueryService;
