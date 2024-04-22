@@ -22,8 +22,8 @@ import com.algafood.algafoodapi.domain.service.VendaReportService;
 @RequestMapping(path = "/estatisticas")
 public class EstatisticasController {
 
-    @Autowired
-    private VendaReportService vendaReportService;
+    // @Autowired
+    // private VendaReportService vendaReportService;
 
     @Autowired
     private VendaQueryService vendaQueryService;
