@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.algafood.algafoodapi.domain.filtro.VendaDiariaFiltro;
+import com.algafood.algafoodapi.domain.filtro.VendaDiariaFilter;
 import com.algafood.algafoodapi.domain.model.dto.VendaDiaria;
 
 @Component
 public interface VendaQueryService {
 
-    List<VendaDiaria> consultaVendaDiarias(VendaDiariaFiltro filtro, String timeOffSet);
+    List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, String timeOffSet);
 }

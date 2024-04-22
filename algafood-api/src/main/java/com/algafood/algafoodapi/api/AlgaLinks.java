@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.algafood.algafoodapi.api.controller.CidadeController;
 import com.algafood.algafoodapi.api.controller.CozinhaController;
 import com.algafood.algafoodapi.api.controller.EstadoController;
+import com.algafood.algafoodapi.api.controller.EstatisticasController;
 import com.algafood.algafoodapi.api.controller.FluxoPedidoController;
 import com.algafood.algafoodapi.api.controller.FormaPagamentoController;
 import com.algafood.algafoodapi.api.controller.GrupoController;
@@ -50,6 +51,23 @@ public class AlgaLinks {
 
         return Link.of(UriTemplate.of(pedidosUrl,
                 PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
+    }
+
+    public Link linkToEstatisticas(String rel) {
+        return linkTo(EstatisticasController.class).withRel(rel);
+    }
+
+    public Link linkToEstatisticasVendasDiarias(String rel) {
+        TemplateVariables filtroVariables = new TemplateVariables(
+                new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+                new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+
+        String pedidosUrl = linkTo(methodOn(EstatisticasController.class)
+                .consultarVendasDiarias(null, null)).toUri().toString();
+
+        return Link.of(UriTemplate.of(pedidosUrl, filtroVariables), rel);
     }
 
     public Link linkToPermissoes(String rel) {
