@@ -73,11 +73,11 @@ public class AlgaLinks {
                 .desassociar(grupoId, permissaoId)).withRel(rel);
     }
 
-    public Link linkToGrupo(String rel) {
+    public Link linkToGrupos(String rel) {
         return linkTo(GrupoController.class).withRel(rel);
     }
 
-    public Link linkToGrupo() {
+    public Link linkToGrupos() {
         return linkToRestaurantes(IanaLinkRelations.SELF.value());
     }
 

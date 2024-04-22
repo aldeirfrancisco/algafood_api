@@ -30,14 +30,14 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
         GrupoDTO grupoDTO = createModelWithId(grupo.getId(), grupo);
         modelMapper.map(grupo, grupoDTO);
 
-        grupoDTO.add(algaLinks.linkToGrupo("grupos"));
+        grupoDTO.add(algaLinks.linkToGrupos("grupos"));
         return grupoDTO;
 
     }
 
     @Override
     public CollectionModel<GrupoDTO> toCollectionModel(Iterable<? extends Grupo> entities) {
-        return super.toCollectionModel(entities).add(algaLinks.linkToGrupo());
+        return super.toCollectionModel(entities).add(algaLinks.linkToGrupos());
     }
 
 }
