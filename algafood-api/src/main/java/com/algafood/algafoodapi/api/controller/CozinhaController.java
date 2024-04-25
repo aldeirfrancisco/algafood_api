@@ -2,6 +2,8 @@ package com.algafood.algafoodapi.api.controller;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.algafoodapi.domain.repository.CozinhaRepository;
 import com.algafood.algafoodapi.domain.service.CadastroCozinhaService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.algafood.algafoodapi.api.asswmbler.CozinhaInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.CozinhaModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.CozinhaInput;
@@ -30,10 +35,11 @@ import com.algafood.algafoodapi.domain.model.Cozinha;
 
 //@ResponseBody garante que a resposta do metodo vai ser o corpo da requeiscao
 //@Controller
+@Slf4j
 @RestController
 @RequestMapping("/cozinhas")
 public class CozinhaController {
-
+    private static final Logger logger = LoggerFactory.getLogger(CozinhaController.class);
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
@@ -52,6 +58,7 @@ public class CozinhaController {
 
     @GetMapping
     public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
+        log.info("Aldeir {}", pageable.getPageSize());
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
         @SuppressWarnings("unchecked")
         PagedModel<CozinhaDTO> cozinhaPagedModel = pagedResourcesAssembler
