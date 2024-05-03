@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +57,7 @@ public class CozinhaController {
     @Autowired
     private PagedResourcesAssembler pagedResourcesAssembler;
 
+    @PreAuthorize("isAuthenticated")
     @GetMapping
     public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
         log.info("Aldeir {}", pageable.getPageSize());
@@ -67,6 +69,7 @@ public class CozinhaController {
         return cozinhaPagedModel;
     }
 
+    @PreAuthorize("isAuthenticated")
     @GetMapping("/{cozinhaId}")
     public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
@@ -74,6 +77,7 @@ public class CozinhaController {
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
+    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -83,6 +87,7 @@ public class CozinhaController {
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
+    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
     @PutMapping("/{cozinhaId}")
     public CozinhaDTO atualizar(@PathVariable Long cozinhaId,
             @RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -93,6 +98,7 @@ public class CozinhaController {
         return cozinhaModelAssembler.toModel(cozinhaAtual);
     }
 
+    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long cozinhaId) {
