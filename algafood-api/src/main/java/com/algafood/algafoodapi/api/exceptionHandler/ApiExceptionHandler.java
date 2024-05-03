@@ -221,7 +221,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
         }
 
-        @ExceptionHandler(EntidadeNaoEncontradaException.class)
+        @ExceptionHandler(AccessDeniedException.class)
         public ResponseEntity<?> handleEntidadeNaoEncontrada(AccessDeniedException ex,
                         WebRequest request) {
 
