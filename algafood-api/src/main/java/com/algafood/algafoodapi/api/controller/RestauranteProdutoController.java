@@ -22,6 +22,8 @@ import com.algafood.algafoodapi.api.asswmbler.ProdutoInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.ProdutoModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.ProdutoInput;
 import com.algafood.algafoodapi.api.model.dtooutput.ProdutoDTO;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeEditar;
 import com.algafood.algafoodapi.domain.model.Produto;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.ProdutoRepository;
@@ -50,6 +52,7 @@ public class RestauranteProdutoController {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @PodeConsultar
     @GetMapping
     public CollectionModel<ProdutoDTO> listar(@PathVariable Long restauranteId,
             @RequestParam(required = false) Boolean incluirInativos) {
@@ -67,12 +70,14 @@ public class RestauranteProdutoController {
                 .add(algaLinks.linkToProdutos(restauranteId));
     }
 
+    @PodeConsultar
     @GetMapping("/{produtoId}")
     public ProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
         Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
         return produtoModelAssembler.toModel(produto);
     }
 
+    @PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoDTO adicionar(@PathVariable Long restauranteId,
@@ -87,6 +92,7 @@ public class RestauranteProdutoController {
         return produtoModelAssembler.toModel(produto);
     }
 
+    @PodeEditar
     @PutMapping("/{produtoId}")
     public ProdutoDTO atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId,
             @RequestBody @Valid ProdutoInput produtoInput) {

@@ -12,8 +12,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +31,8 @@ import com.algafood.algafoodapi.api.asswmbler.CozinhaInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.CozinhaModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.CozinhaInput;
 import com.algafood.algafoodapi.api.model.dtooutput.CozinhaDTO;
-import com.algafood.algafoodapi.core.security.CheckSegurity;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Cozinhas.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Cozinhas.PodeEditar;
 import com.algafood.algafoodapi.domain.model.Cozinha;
 
 //@ResponseBody garante que a resposta do metodo vai ser o corpo da requeiscao
@@ -59,7 +58,7 @@ public class CozinhaController {
     @Autowired
     private PagedResourcesAssembler pagedResourcesAssembler;
 
-    @CheckSegurity.Cozinhas.PodeConsultar
+    @PodeConsultar
     @GetMapping
     public PagedModel<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) {
         // System.out.println(SecurityContextHolder.getContext().getAuthentication().getAuthorities());
@@ -71,7 +70,7 @@ public class CozinhaController {
         return cozinhaPagedModel;
     }
 
-    @CheckSegurity.Cozinhas.PodeConsultar
+    @PodeConsultar
     @GetMapping("/{cozinhaId}")
     public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
@@ -79,7 +78,7 @@ public class CozinhaController {
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
-    @CheckSegurity.Cozinhas.PodeEditar
+    @PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -89,7 +88,7 @@ public class CozinhaController {
         return cozinhaModelAssembler.toModel(cozinha);
     }
 
-    @CheckSegurity.Cozinhas.PodeEditar
+    @PodeEditar
     @PutMapping("/{cozinhaId}")
     public CozinhaDTO atualizar(@PathVariable Long cozinhaId,
             @RequestBody @Valid CozinhaInput cozinhaInput) {
@@ -100,7 +99,7 @@ public class CozinhaController {
         return cozinhaModelAssembler.toModel(cozinhaAtual);
     }
 
-    @CheckSegurity.Cozinhas.PodeEditar
+    @PodeEditar
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long cozinhaId) {

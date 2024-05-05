@@ -17,7 +17,8 @@ import com.algafood.algafoodapi.api.AlgaLinks;
 import com.algafood.algafoodapi.api.asswmbler.FormaPagamentoModelAssembler;
 
 import com.algafood.algafoodapi.api.model.dtooutput.FormaPagamentoDTO;
-
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeEditar;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;
@@ -35,6 +36,7 @@ public class RestauranteFormaPagamentoController {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @PodeConsultar
     @GetMapping
     public CollectionModel<FormaPagamentoDTO> listar(@PathVariable long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
@@ -53,6 +55,7 @@ public class RestauranteFormaPagamentoController {
         return formasPagamentoModel;
     }
 
+    @PodeEditar
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociarFormaPagamento(@PathVariable long restauranteId,
@@ -61,6 +64,7 @@ public class RestauranteFormaPagamentoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PodeEditar
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associarFormapagamento(@PathVariable long restauranteId,
