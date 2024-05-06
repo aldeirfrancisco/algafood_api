@@ -1,7 +1,6 @@
 package com.algafood.algafoodapi.api.asswmbler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.algafood.algafoodapi.api.AlgaLinks;
 
 import com.algafood.algafoodapi.api.controller.PedidoController;
-import com.algafood.algafoodapi.api.controller.RestauranteProdutoController;
 
 import com.algafood.algafoodapi.api.model.dtooutput.PedidoDTO;
 import com.algafood.algafoodapi.core.security.AlgaSecurit;
@@ -36,7 +34,10 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
     public PedidoDTO toModel(Pedido pedido) {
         PedidoDTO pedidoModel = modelMapper.map(pedido, PedidoDTO.class);
-        pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
+        if (algaSecurity.podePesquisarPedidos()) {
+            pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
+        }
+
         if (algaSecurity.podeGerenciarPedidos(pedido.getId())) {
             if (pedido.podeSerConfirmado()) {
                 pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedido.getId(), "confirmar"));
@@ -50,23 +51,35 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
                 pedidoModel.add(algaLinks.linkToEntregaPedido(pedido.getId(), "entregar"));
             }
         }
-        pedidoModel.getRestaurante().add(
-                algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoModel.getCliente().add(
-                algaLinks.linkToUsuario(pedido.getCliente().getId()));
+        if (algaSecurity.podeConsultarRestaurantes()) {
+            pedidoModel.getRestaurante().add(
+                    algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        }
 
-        pedidoModel.getFormaPagamento().add(
-                algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+        if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            pedidoModel.getCliente().add(
+                    algaLinks.linkToUsuario(pedido.getCliente().getId()));
+        }
 
-        pedidoModel.getEnderecoEntrega().getCidade().add(
-                algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+        if (algaSecurity.podeConsultarFormasPagamento()) {
+            pedidoModel.getFormaPagamento().add(
+                    algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+        }
 
-        pedidoModel.getItens().forEach(item -> {
-            item.add(linkTo(methodOn(RestauranteProdutoController.class)
-                    .buscar(pedidoModel.getRestaurante().getId(), item.getProdutoId())).withRel("produto"));
-        });
+        if (algaSecurity.podeConsultarCidades()) {
+            pedidoModel.getEnderecoEntrega().getCidade().add(
+                    algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+        }
 
+        // Quem pode consultar restaurantes, também pode consultar os produtos dos
+        // restaurantes
+        if (algaSecurity.podeConsultarRestaurantes()) {
+            pedidoModel.getItens().forEach(item -> {
+                item.add(algaLinks.linkToProduto(
+                        pedidoModel.getRestaurante().getId(), item.getProdutoId(), "produto"));
+            });
+        }
         return pedidoModel;
     }
 

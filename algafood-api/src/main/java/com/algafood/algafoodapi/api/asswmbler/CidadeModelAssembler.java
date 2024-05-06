@@ -1,8 +1,5 @@
 package com.algafood.algafoodapi.api.asswmbler;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -13,6 +10,7 @@ import com.algafood.algafoodapi.api.AlgaLinks;
 import com.algafood.algafoodapi.api.controller.CidadeController;
 
 import com.algafood.algafoodapi.api.model.dtooutput.CidadeDTO;
+import com.algafood.algafoodapi.core.security.AlgaSecurit;
 import com.algafood.algafoodapi.domain.model.Cidade;
 
 @Component
@@ -28,20 +26,32 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurit algaSecurity;
+
     @Override
     public CidadeDTO toModel(Cidade cidade) {
-        CidadeDTO cidadeDTO = modelMapper.map(cidade, CidadeDTO.class);
-        cidadeDTO.add(linkTo(methodOn(CidadeController.class).buscar(cidadeDTO.getId())).withSelfRel());
+        CidadeDTO cidadeModel = modelMapper.map(cidade, CidadeDTO.class);
+        if (algaSecurity.podeConsultarCidades()) {
+            cidadeModel.add(algaLinks.linkToCidades("cidades"));
+        }
 
-        cidadeDTO.add(algaLinks.linkToCidades("cidades"));
+        if (algaSecurity.podeConsultarEstados()) {
+            cidadeModel.getEstado().add(algaLinks.linkToEstado(cidadeModel.getEstado().getId()));
+        }
 
-        cidadeDTO.getEstado().add(algaLinks.linkToEstado(cidadeDTO.getEstado().getId()));
-        return cidadeDTO;
+        return cidadeModel;
     }
 
     @Override
     public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
-        return super.toCollectionModel(entities).add(algaLinks.linkToCidades());
+        CollectionModel<CidadeDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (algaSecurity.podeConsultarCidades()) {
+            collectionModel.add(algaLinks.linkToCidades());
+        }
+
+        return collectionModel;
     }
 
 }

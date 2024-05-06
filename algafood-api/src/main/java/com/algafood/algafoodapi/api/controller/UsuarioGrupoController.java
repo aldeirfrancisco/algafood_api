@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algafood.algafoodapi.api.AlgaLinks;
 import com.algafood.algafoodapi.api.asswmbler.GrupoModelAssembler;
 import com.algafood.algafoodapi.api.model.dtooutput.GrupoDTO;
+import com.algafood.algafoodapi.core.security.AlgaSecurit;
 import com.algafood.algafoodapi.core.security.CheckSecurity.UsuariosGruposPermissoes.PodeConsultar;
 import com.algafood.algafoodapi.core.security.CheckSecurity.UsuariosGruposPermissoes.PodeEditar;
 import com.algafood.algafoodapi.domain.model.Usuario;
@@ -33,18 +34,27 @@ public class UsuarioGrupoController {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurit algaSecurity;
+
     @PodeConsultar
     @GetMapping
     public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
 
-        CollectionModel<GrupoDTO> grupoDTOs = grupoModelAssembler.toCollectionModel(usuario.getGrupos())
-                .removeLinks()
-                .add(algaLinks.linkToUsuarioGrupoAssociacao(usuarioId, "Associar"));
-        grupoDTOs.getContent().forEach(grupoDTO -> grupoDTO
-                .add(algaLinks.linkToUsuarioGrupoDesassociacao(usuarioId, grupoDTO.getId(), "desassociar")));
+        CollectionModel<GrupoDTO> gruposModel = grupoModelAssembler.toCollectionModel(usuario.getGrupos())
+                .removeLinks();
 
-        return grupoDTOs;
+        if (algaSecurity.podeEditarUsuariosGruposPermissoes()) {
+            gruposModel.add(algaLinks.linkToUsuarioGrupoAssociacao(usuarioId, "associar"));
+
+            gruposModel.getContent().forEach(grupoModel -> {
+                grupoModel.add(algaLinks.linkToUsuarioGrupoDesassociacao(
+                        usuarioId, grupoModel.getId(), "desassociar"));
+            });
+        }
+
+        return gruposModel;
 
     }
 
