@@ -29,6 +29,7 @@ import com.algafood.algafoodapi.core.data.PageWrapper;
 import com.algafood.algafoodapi.core.data.PageableTranslator;
 import com.algafood.algafoodapi.core.security.AlgaSecurit;
 import com.algafood.algafoodapi.core.security.CheckSecurity.Pedidos.PodeBuscar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Pedidos.PodeCriar;
 import com.algafood.algafoodapi.core.security.CheckSecurity.Pedidos.PodePesquisar;
 import com.algafood.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.exception.NegocioException;
@@ -86,6 +87,7 @@ public class PedidoController {
         return pedidoModelAssembler.toModel(pedido);
     }
 
+    @PodeCriar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoDTO adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
