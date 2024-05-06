@@ -19,6 +19,8 @@ import com.algafood.algafoodapi.api.asswmbler.GrupoInputDissassembler;
 import com.algafood.algafoodapi.api.asswmbler.GrupoModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.GrupoInput;
 import com.algafood.algafoodapi.api.model.dtooutput.GrupoDTO;
+import com.algafood.algafoodapi.core.security.CheckSecurity.UsuariosGruposPermissoes.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.UsuariosGruposPermissoes.PodeEditar;
 import com.algafood.algafoodapi.domain.model.Grupo;
 import com.algafood.algafoodapi.domain.repository.GrupoRepository;
 import com.algafood.algafoodapi.domain.service.CadastroGrupoService;
@@ -38,17 +40,20 @@ public class GrupoController {
     @Autowired
     private CadastroGrupoService grupoService;
 
+    @PodeConsultar
     @GetMapping
     public CollectionModel<GrupoDTO> listar() {
         return grupoModelAssembler.toCollectionModel(grupoRepository.findAll());
 
     }
 
+    @PodeConsultar
     @GetMapping("/{grupoId}")
     public GrupoDTO buscar(@PathVariable Long grupoId) {
         return grupoModelAssembler.toModel(grupoService.buscarOuFalhar(grupoId));
     }
 
+    @PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public GrupoDTO salvar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -57,12 +62,14 @@ public class GrupoController {
         return grupoModelAssembler.toModel(grupoService.salvar(grupo));
     }
 
+    @PodeEditar
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long grupoId) {
         grupoService.excluir(grupoId);
     }
 
+    @PodeEditar
     @PutMapping("/{grupoId}")
     public GrupoDTO atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
         Grupo grupo = grupoService.buscarOuFalhar(grupoId);

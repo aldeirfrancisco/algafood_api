@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algafood.algafoodapi.api.AlgaLinks;
 import com.algafood.algafoodapi.api.asswmbler.GrupoModelAssembler;
 import com.algafood.algafoodapi.api.model.dtooutput.GrupoDTO;
+import com.algafood.algafoodapi.core.security.CheckSecurity.UsuariosGruposPermissoes.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.UsuariosGruposPermissoes.PodeEditar;
 import com.algafood.algafoodapi.domain.model.Usuario;
 import com.algafood.algafoodapi.domain.service.CadastroUsuarioService;
 
@@ -31,6 +33,7 @@ public class UsuarioGrupoController {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @PodeConsultar
     @GetMapping
     public CollectionModel<GrupoDTO> listar(@PathVariable Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
@@ -45,6 +48,7 @@ public class UsuarioGrupoController {
 
     }
 
+    @PodeEditar
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> desassociar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
@@ -52,6 +56,7 @@ public class UsuarioGrupoController {
         return ResponseEntity.noContent().build();
     }
 
+    @PodeEditar
     @PutMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> associar(@PathVariable Long usuarioId, @PathVariable Long grupoId) {
