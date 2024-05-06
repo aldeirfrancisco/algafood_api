@@ -18,7 +18,6 @@ import com.algafood.algafoodapi.api.asswmbler.FormaPagamentoModelAssembler;
 
 import com.algafood.algafoodapi.api.model.dtooutput.FormaPagamentoDTO;
 import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeConsultar;
-import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeGerenciarCadastro;
 import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeGerenciarFuncionamento;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 

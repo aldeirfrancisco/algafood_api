@@ -18,14 +18,18 @@ public class AlgaSecurit {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public Long getUsuario() {
+    public Long getUsuarioId() {
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
 
         return jwt.getClaim("id_usuario");
     }
 
-    public boolean gerenciaRestaurante(Long restaurateId) {
-        return restauranteRepository.existsResponsavel(restaurateId, getUsuario());
+    public boolean gerenciaRestaurante(Long restauranteId) {
+        if (restauranteId == null) {
+            return false;
+        }
+
+        return restauranteRepository.existsResponsavel(restauranteId, getUsuarioId());
     }
 
 }
