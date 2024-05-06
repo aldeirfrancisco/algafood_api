@@ -22,6 +22,8 @@ import com.algafood.algafoodapi.api.asswmbler.CidadeInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.CidadeModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.CidadeInput;
 import com.algafood.algafoodapi.api.model.dtooutput.CidadeDTO;
+import com.algafood.algafoodapi.core.security.CheckSecurity.FormasPagamento.Cidades.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.FormasPagamento.Cidades.PodeEditar;
 import com.algafood.algafoodapi.domain.exception.*;
 import com.algafood.algafoodapi.domain.model.Cidade;
 import com.algafood.algafoodapi.domain.repository.CidadeRepository;
@@ -48,6 +50,7 @@ public class CidadeController {
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
 
+    @PodeConsultar
     @ApiOperation("Lista as cidades")
     @GetMapping
     public CollectionModel<CidadeDTO> listar() {
@@ -56,6 +59,7 @@ public class CidadeController {
 
     }
 
+    @PodeConsultar
     @ApiOperation("Busca uma cidade por ID")
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId) {
@@ -64,6 +68,7 @@ public class CidadeController {
         return cidadeModelAssembler.toModel(cidade);
     }
 
+    @PodeEditar
     @ApiOperation("Cadastra uma cidade")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -80,6 +85,7 @@ public class CidadeController {
         }
     }
 
+    @PodeEditar
     @ApiOperation("Atualiza uma cidade por ID")
     @PutMapping("/{cidadeId}")
     public CidadeDTO atualizar(@ApiParam(value = "ID de uma cidade", example = "1") @PathVariable Long cidadeId,
@@ -97,6 +103,7 @@ public class CidadeController {
         }
     }
 
+    @PodeEditar
     @ApiOperation("Exclui uma cidade por ID")
     @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

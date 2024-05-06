@@ -21,6 +21,8 @@ import com.algafood.algafoodapi.api.asswmbler.EstadoInputDisassembler;
 import com.algafood.algafoodapi.api.asswmbler.EstadoModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.EstadoInput;
 import com.algafood.algafoodapi.api.model.dtooutput.EstadoDTO;
+import com.algafood.algafoodapi.core.security.CheckSecurity.FormasPagamento.Estados.PodeEditar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.FormasPagamento.Estados.PodeConsultar;
 import com.algafood.algafoodapi.domain.model.Estado;
 import com.algafood.algafoodapi.domain.repository.EstadoRepository;
 import com.algafood.algafoodapi.domain.service.CadastroEstadoService;
@@ -41,6 +43,7 @@ public class EstadoController {
     @Autowired
     private EstadoInputDisassembler estadoInputDisassembler;
 
+    @PodeConsultar
     @GetMapping
     public CollectionModel<EstadoDTO> listar() {
         List<Estado> todosEstados = estadoRepository.findAll();
@@ -48,6 +51,7 @@ public class EstadoController {
         return estadoModelAssembler.toCollectionModel(todosEstados);
     }
 
+    @PodeConsultar
     @GetMapping("/{estadoId}")
     public EstadoDTO buscar(@PathVariable Long estadoId) {
         Estado estado = cadastroEstado.buscarOuFalhar(estadoId);
@@ -55,6 +59,7 @@ public class EstadoController {
         return estadoModelAssembler.toModel(estado);
     }
 
+    @PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EstadoDTO adicionar(@RequestBody @Valid EstadoInput estadoInput) {
@@ -65,6 +70,7 @@ public class EstadoController {
         return estadoModelAssembler.toModel(estado);
     }
 
+    @PodeEditar
     @PutMapping("/{estadoId}")
     public EstadoDTO atualizar(@PathVariable Long estadoId,
             @RequestBody @Valid EstadoInput estadoInput) {
@@ -77,6 +83,7 @@ public class EstadoController {
         return estadoModelAssembler.toModel(estadoAtual);
     }
 
+    @PodeEditar
     @DeleteMapping("/{estadoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long estadoId) {
