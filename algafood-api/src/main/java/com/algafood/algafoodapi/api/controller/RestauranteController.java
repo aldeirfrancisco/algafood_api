@@ -25,7 +25,8 @@ import com.algafood.algafoodapi.api.asswmbler.RestauranteModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.RestauranteInput;
 import com.algafood.algafoodapi.api.model.dtooutput.RestauranteDTO;
 import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeConsultar;
-import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeEditar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeGerenciarCadastro;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeGerenciarFuncionamento;
 import com.algafood.algafoodapi.domain.exception.*;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 import com.algafood.algafoodapi.domain.repository.RestauranteRepository;
@@ -79,7 +80,7 @@ public class RestauranteController {
 
     }
 
-    @PodeEditar
+    @PodeGerenciarCadastro
     @PutMapping("/{restauranteId}")
     public RestauranteDTO atualizar(@PathVariable Long restauranteId,
             @RequestBody @Valid RestauranteInput restauranteInput) {
@@ -98,7 +99,7 @@ public class RestauranteController {
         }
     }
 
-    @PodeEditar
+    @PodeGerenciarCadastro
     @PutMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> ativar(@PathVariable long restauranteId) {
@@ -106,7 +107,7 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PodeEditar
+    @PodeGerenciarCadastro
     @DeleteMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> inativar(@PathVariable Long restauranteId) {
@@ -115,7 +116,7 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PodeEditar
+    @PodeGerenciarFuncionamento
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> abrir(@PathVariable Long restauranteId) {
@@ -124,7 +125,7 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PodeEditar
+    @PodeGerenciarCadastro
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> fechar(@PathVariable Long restauranteId) {
@@ -133,7 +134,7 @@ public class RestauranteController {
         return ResponseEntity.noContent().build();
     }
 
-    @PodeEditar
+    @PodeGerenciarCadastro
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void ativarMultiplos(@RequestBody List<Long> restaurateIds) {
@@ -144,7 +145,7 @@ public class RestauranteController {
         }
     }
 
-    @PodeEditar
+    @PodeGerenciarCadastro
     @DeleteMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativarMultiplos(@RequestBody List<Long> restaurateIds) {

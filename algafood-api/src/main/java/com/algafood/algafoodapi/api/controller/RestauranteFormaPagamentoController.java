@@ -18,7 +18,8 @@ import com.algafood.algafoodapi.api.asswmbler.FormaPagamentoModelAssembler;
 
 import com.algafood.algafoodapi.api.model.dtooutput.FormaPagamentoDTO;
 import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeConsultar;
-import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeEditar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeGerenciarCadastro;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Restaurantes.PodeGerenciarFuncionamento;
 import com.algafood.algafoodapi.domain.model.Restaurante;
 
 import com.algafood.algafoodapi.domain.service.CadastroRestauranteService;
@@ -55,19 +56,19 @@ public class RestauranteFormaPagamentoController {
         return formasPagamentoModel;
     }
 
-    @PodeEditar
+    @PodeGerenciarFuncionamento
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> desassociarFormaPagamento(@PathVariable long restauranteId,
+    public ResponseEntity<Void> desassociar(@PathVariable long restauranteId,
             @PathVariable Long formaPagamentoId) {
         cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
         return ResponseEntity.noContent().build();
     }
 
-    @PodeEditar
+    @PodeGerenciarFuncionamento
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> associarFormapagamento(@PathVariable long restauranteId,
+    public ResponseEntity<Void> associar(@PathVariable long restauranteId,
             @PathVariable Long formaPagamentoId) {
         cadastroRestaurante.associarFormapagamento(restauranteId, formaPagamentoId);
         return ResponseEntity.noContent().build();

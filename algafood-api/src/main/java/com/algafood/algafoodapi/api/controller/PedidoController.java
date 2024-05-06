@@ -28,6 +28,7 @@ import com.algafood.algafoodapi.api.model.dtooutput.PedidoResumoDTO;
 import com.algafood.algafoodapi.core.data.PageWrapper;
 import com.algafood.algafoodapi.core.data.PageableTranslator;
 import com.algafood.algafoodapi.core.security.AlgaSecurit;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Pedidos.PodeBuscar;
 import com.algafood.algafoodapi.domain.exception.EntidadeNaoEncontradaException;
 import com.algafood.algafoodapi.domain.exception.NegocioException;
 import com.algafood.algafoodapi.domain.filtro.PedidoFiltro;
@@ -75,6 +76,7 @@ public class PedidoController {
         return pedidoResumo;
     }
 
+    @PodeBuscar
     @GetMapping("/{pedidoId}")
     public PedidoDTO buscar(@PathVariable Long pedidoId) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(pedidoId);

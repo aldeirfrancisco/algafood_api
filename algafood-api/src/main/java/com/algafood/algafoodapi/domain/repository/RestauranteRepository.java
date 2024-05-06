@@ -38,4 +38,8 @@ public interface RestauranteRepository extends CustomJpaRepository<Restaurante, 
     List<Restaurante> findTop2ByNomeContaining(String nome);
 
     int countByCozinhaId(Long cozinha);
+
+    @Query(" select case when count(1) > 0 then true else false end from Restaurante rest\r\n" + //
+            " join rest.responsaveis resp where rest.id = :restauranteId and resp.id = :usuarioId")
+    boolean existsResponsavel(Long restauranteId, long usuarioId);
 }

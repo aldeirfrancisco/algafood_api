@@ -5,6 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.METHOD;
 
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 public @interface CheckSecurity {
@@ -28,13 +29,29 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(METHOD)
-        public @interface PodeEditar {
+        public @interface PodeGerenciarCadastro {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_COZINHAS') or @algaSecurit.gerenciaRestaurante(#restauranteId)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(METHOD)
+        public @interface PodeGerenciarFuncionamento {
         }
 
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(METHOD)
         public @interface PodeConsultar {
+        }
+    }
+
+    public @interface Pedidos {
+        @PreAuthorize("hasAuthority('SCOPE_READ') and  isAuthenticated()")
+        @PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or  @algaSecurit.getUsuario() == returnObject.cliente.id or"
+                + " @algaSecurit.gerenciaRestaurante(returnObject.restaurante.id)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(METHOD)
+        public @interface PodeBuscar {
         }
     }
 }
