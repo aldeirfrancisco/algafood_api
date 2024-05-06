@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algafood.algafoodapi.api.AlgaLinks;
+import com.algafood.algafoodapi.core.security.CheckSecurity.Estatisticas.PodeConsultar;
 import com.algafood.algafoodapi.domain.filtro.VendaDiariaFilter;
 import com.algafood.algafoodapi.domain.model.dto.VendaDiaria;
 import com.algafood.algafoodapi.domain.service.VendaQueryService;
@@ -31,6 +32,7 @@ public class EstatisticasController {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @PodeConsultar
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public EstatisticasModel estatisticas() {
         var estatisticasModel = new EstatisticasModel();
@@ -40,6 +42,7 @@ public class EstatisticasController {
         return estatisticasModel;
     }
 
+    @PodeConsultar
     @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
