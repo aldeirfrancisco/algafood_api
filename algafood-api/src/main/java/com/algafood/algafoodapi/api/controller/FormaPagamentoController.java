@@ -28,6 +28,8 @@ import com.algafood.algafoodapi.api.asswmbler.FormaPagamentoInputDissasembler;
 import com.algafood.algafoodapi.api.asswmbler.FormaPagamentoModelAssembler;
 import com.algafood.algafoodapi.api.model.dtoInput.FormaPagamentoInput;
 import com.algafood.algafoodapi.api.model.dtooutput.FormaPagamentoDTO;
+import com.algafood.algafoodapi.core.security.CheckSecurity.FormasPagamento.PodeConsultar;
+import com.algafood.algafoodapi.core.security.CheckSecurity.FormasPagamento.PodeEditar;
 import com.algafood.algafoodapi.domain.model.FormaPagamento;
 import com.algafood.algafoodapi.domain.repository.FormaPagamentoRepository;
 import com.algafood.algafoodapi.domain.service.CadastroFormaPagamento;
@@ -48,6 +50,7 @@ public class FormaPagamentoController {
     @Autowired
     private CadastroFormaPagamento cadastroFormaPagamento;
 
+    @PodeConsultar
     @GetMapping
     public ResponseEntity<CollectionModel<FormaPagamentoDTO>> listar(ServletWebRequest request) {
 
@@ -57,6 +60,7 @@ public class FormaPagamentoController {
         return ResponseEntity.ok().body(formasPagamentosModel);
     }
 
+    @PodeConsultar
     @GetMapping(value = "/{formaPagamentoId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId,
             ServletWebRequest request) {
@@ -86,6 +90,7 @@ public class FormaPagamentoController {
                 .body(formaPagamentoModel);
     }
 
+    @PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public FormaPagamento salvar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -93,12 +98,14 @@ public class FormaPagamentoController {
         return cadastroFormaPagamento.salvar(formaPagamento);
     }
 
+    @PodeEditar
     @DeleteMapping("/formaPagamentoId")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(long formaPagamentoId) {
         cadastroFormaPagamento.excluir(formaPagamentoId);
     }
 
+    @PodeEditar
     @PutMapping("/{formaPagamentoId}")
     public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
             @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
